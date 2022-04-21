@@ -55,6 +55,7 @@ comeco()
 
 // -------------------- Tela 2 - Jogando Quizz ------------------------
 let questoesSortidas = []
+let levels = []
 const opacidadeLinear = 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),'
 const background = (response) => `
     background: ${opacidadeLinear} url(${response.data.image}); 
@@ -72,6 +73,7 @@ function obterQuizz() {
 
     promise.then(response => {
         console.log(response.data)
+        levels = response.data.levels
         document.querySelector('.container-jogando').innerHTML = `
             <div class="quizz-principal" style="${background(response)}">
                 <h1>${response.data.title}</h1>
@@ -109,12 +111,16 @@ function obterQuizz() {
 }
 obterQuizz()
 let count = 0;
+let countAcertos = 0;
 
 function selecionarResposta(resposta, id) {
+    if(resposta.classList.contains('true')) countAcertos++
+
     for(let i = 0; i < document.querySelectorAll(`.card-resposta.${id}`).length; i++) {
         if(document.querySelectorAll(`.card-resposta.${id}`)[i] !== resposta) {
             document.querySelectorAll(`.card-resposta.${id}`)[i].classList.add('opacity')
         }
+
 
         if(document.querySelectorAll(`.card-resposta.${id}`)[i].classList.contains('true')) {
             document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = 'green'
@@ -122,12 +128,57 @@ function selecionarResposta(resposta, id) {
             document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = 'red'
         }
     }
-    console.log(count)
+    // console.log(count)
     if(document.querySelectorAll('.container-perguntas')[count].nextElementSibling !== null) {
         setTimeout(() => {
             document.querySelectorAll('.container-perguntas')[count].nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
             count += 1;
         }, 2000)
+    } else {
+        console.log('ok!')
+        setTimeout(() => {
+            finalizarQuizz()
+            document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 2000)
     }
     document.querySelectorAll(`.card-resposta.${id}`).forEach(card => card.removeAttribute('onclick'));
+    console.log(countAcertos)
+}
+
+function finalizarQuizz() {
+    let countLevels = 0
+    levels.sort((a, b) => a.minValue - b.minValue)
+    // console.log(levels)
+    countAcertos = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;
+    countAcertos = Math.round(countAcertos)
+    // console.log(countAcertos)
+
+    for(let i = 0; i < levels.length; i++) {
+        if(countAcertos >= levels[i].minValue) {
+            countLevels++
+        }
+    }
+
+    // console.log(levels[countLevels - 1])
+
+
+    document.querySelector('.finalizar-jogo').innerHTML = `
+        <div class="final-quizz">
+            <div class="container-final">
+                <div class="titulo-resultado">
+                    <h3>${countAcertos}% de acerto: ${levels[countLevels - 1].title}</h3>
+                </div>
+                <div class="container-resultado">   
+                    <img src="${levels[countLevels - 1].image}" alt="">
+                    <div class="texto-resultado">
+                        <p>${levels[countLevels - 1].text}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="buttons-final">
+                <button class="reiniciar-quizz">Reiniciar Quizz</button>
+                <button class="voltar-home">Voltar pra home</button>
+            </div>
+        </div>
+    `
 }
