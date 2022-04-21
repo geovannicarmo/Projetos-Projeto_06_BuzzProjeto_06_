@@ -81,7 +81,7 @@ function obterQuizz() {
         `
         const questions = response.data.questions
 
-        for(let i = 0; i < questions.length; i++) {
+        for (let i = 0; i < questions.length; i++) {
             document.querySelector('.perguntas-quizz').innerHTML += `
                 <div class="container-perguntas">
                     <div class="titulo-pergunta" style="background-color: ${questions[i].color};">
@@ -95,9 +95,10 @@ function obterQuizz() {
             questoesSortidas = questoesSortidas.sort(embaralhar)
             console.log(questoesSortidas)
 
-            for(let j = 0; j < questions[i].answers.length; j++) {
+            for (let j = 0; j < questions[i].answers.length; j++) {
                 document.querySelectorAll('.container-respostas')[i].innerHTML += `
-                    <div class="card-resposta">
+                    <div class="card-resposta card${i} ${questoesSortidas[j].isCorrectAnswer.toString()}" 
+                        onclick="selecionarResposta(this, 'card${i}')">
                         <img src="${questoesSortidas[j].image}" alt="">
                         <p>${questoesSortidas[j].text}</p>
                     </div>
@@ -107,3 +108,26 @@ function obterQuizz() {
     })
 }
 obterQuizz()
+let count = 0;
+
+function selecionarResposta(resposta, id) {
+    for(let i = 0; i < document.querySelectorAll(`.card-resposta.${id}`).length; i++) {
+        if(document.querySelectorAll(`.card-resposta.${id}`)[i] !== resposta) {
+            document.querySelectorAll(`.card-resposta.${id}`)[i].classList.add('opacity')
+        }
+
+        if(document.querySelectorAll(`.card-resposta.${id}`)[i].classList.contains('true')) {
+            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = 'green'
+        } else {
+            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = 'red'
+        }
+    }
+    console.log(count)
+    if(document.querySelectorAll('.container-perguntas')[count].nextElementSibling !== null) {
+        setTimeout(() => {
+            document.querySelectorAll('.container-perguntas')[count].nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            count += 1;
+        }, 2000)
+    }
+    document.querySelectorAll(`.card-resposta.${id}`).forEach(card => card.removeAttribute('onclick'));
+}
