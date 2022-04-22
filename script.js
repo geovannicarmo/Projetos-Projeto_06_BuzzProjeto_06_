@@ -1,5 +1,15 @@
 let renderizaCriarPerguntas=[]
+let nniveis;
+let titulo;
+let url;
+let nperguntas=1;
 
+
+
+
+function falha(){
+    alert("Preencha os dados corretamente")
+}
 
 
 
@@ -26,18 +36,19 @@ function isImage(url){
   }
 
 function infQuizz(){
-    let titulo=document.querySelector("#titulo")
+    titulo=document.querySelector("#titulo").value
     
-    let url=document.querySelector("#url")
+    url=document.querySelector("#url").value
     
-    let nperguntas=document.querySelector("#nperguntas")
+    nperguntas=document.querySelector("#nperguntas").value
+   
     
-    let nniveis=document.querySelector("#nniveis")
+    nniveis=document.querySelector("#nniveis").value
     
+    console.log(nperguntas)
 
 
-
-    if(titulo.value.length<20 || titulo.value.length>65 || nperguntas.value<3 || isNaN(nperguntas.value) ||nniveis.value<2 || isNaN(nniveis.value) || !isImage(url.value)){
+    if(titulo.length<20 || titulo.length>65 || nperguntas<1 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url)){
        
         
 
@@ -48,6 +59,11 @@ function infQuizz(){
 
         let infBasic = document.querySelector(".infBasic")
         infBasic.classList.add("escondido")
+
+        let criaPerguntas=document.querySelector(".criaPerguntas")
+        criaPerguntas.classList.remove("escondido")
+
+        criarPerguntas()
     }
 }
 
@@ -86,7 +102,9 @@ function comeco() {
   function criarPerguntas(){ 
 
     let element2=document.querySelector(".criaPerguntas")
-    let nperguntas=2;
+
+    console.log(nperguntas)
+   
     for(let i=0; i<nperguntas;i++){
       
    
@@ -129,8 +147,6 @@ function comeco() {
 </div>`
 
 
-  
-
 element2.innerHTML+=renderizaCriarPerguntas[i]
     }
 
@@ -147,20 +163,20 @@ element2.innerHTML+=butãoEnviaperguntas
   }
 
 
- let deus=2
- let idx=deus
+ 
+ let idx=2/*numeto de perguntas*/ 
  let questions=[]
  
   
   function tratarPerguntas(){
    
-    for(let idx=0; idx<deus; idx++){
+    for(let idx=0; idx<nperguntas; idx++){
    
 
     classecriaPerguntas =document.querySelector(".criaPerguntas")
 
     tesxtPergunta= classecriaPerguntas.querySelector(`.classe${idx} #tesxtPergunta`).value
-    console.log(tesxtPergunta)
+    
 
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
@@ -265,11 +281,116 @@ questions.push(objetopergunta)
     
     console.log(questions)
 
+    return criarNiveis()
+
+  
+
+    
+
   }
 
 
+
+  function criarNiveis(){ 
+
+    let criaPerguntas=document.querySelector(".criaPerguntas")
+    criaPerguntas.classList.add("escondido")
+
+    let element3=document.querySelector(".criaNiveis")
+    element3.classList.remove("escondido")
+    let renderizaCriarniveis=[]
+
+    for(let id=0; id<nniveis; id++){
+
+   renderizaCriarniveis[id] =`<div class="infQuizz niveisI classeN${id}">
+
+   <h3>Nível ${id+1}</h3>
+
+   <input type="text" id="TituloNivel" name="firstname" placeholder="    Título do nível">
+
+   <input type="text" id="acertoMinimo" name="firstname" placeholder="    % de acerto mínima
+   ">
+
+
+   <input type="text" id="imagemdonivel" name="firstname" placeholder="    URL da imagem do nível
+   ">
+   <input type="text"  id="descricaoNivel" name="firstname" placeholder="    Descrição do nível
+   ">
+</div>`
+element3.innerHTML+=renderizaCriarniveis[id]
+
+    }
+
+    let butãoEnviaperguntas = `<div onclick="tratarNiveis()" class="buttonInf">
+
+    <p>Finalizar Quizz</p>
+
+</div`
+element3.innerHTML+=butãoEnviaperguntas
+
+console.log(element3)
+   
+}
+
+
+
+function tratarNiveis(){
+    levels=[]
+    let cont=0
+
+        for(let i=0; i<nniveis; i++){
+
+    TituloNivel= document.querySelector(`.classeN${i} #TituloNivel`).value
+
+    acertoMinimo= document.querySelector(`.classeN${i} #acertoMinimo`).value
+
+    imagemdonivel= document.querySelector(`.classeN${i} #imagemdonivel`).value
+    descricaoNivel= document.querySelector(`.classeN${i} #descricaoNivel`).value
+
+    if(TituloNivel.length<10||acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""|| descricaoNivel.length<30||!isImage(imagemdonivel)){
+        return alert("Preencha os dados corretamente.")
+    }
+
+    
+    if (acertoMinimo==0){
+        console.log("cade")
+        cont++
+    }
+
+    levels.push(
+        {
+            title: TituloNivel,
+            image: imagemdonivel,
+            text: descricaoNivel,
+            minValue: acertoMinimo
+
+    
+        }
+    )
+        }
+
+        if(cont===0){
+            return alert("Preencha os dados corretamente.")
+        }
+
+    console.log(levels)
+
+    enviaQuizz ={
+        title: titulo,
+        image: url,
+        questions: questions,
+        levels
+
+    }
+    console.log(enviaQuizz)
+}
+
+
+
+
 comeco()
-criarPerguntas()
+
+
 
 
 // -------------------- Tela 2 - Jogando Quizz ------------------------

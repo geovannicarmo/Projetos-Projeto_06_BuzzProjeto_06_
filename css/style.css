@@ -34,6 +34,15 @@ font-size: 23px;
     font-size: 20px;
 }
 
+.niveisI h3{
+    margin-left: 17px;
+    margin-bottom: 20px;
+    padding-top: 27px;
+    font-size: 20px;
+}
+
+
+
 .infQuizz{
     width: 42%;
     height: 256px;
@@ -78,9 +87,18 @@ input:first-child{
     height: 870px;
 }
 
+.niveisI{
+    height: 400px;
+}
+
 .space{
   
-    margin-bottom: 30px;}
+    margin-bottom: 30px;
+}
+
+#descricaoNivel{
+    height: 177px;
+}
     
 /* .pergunta{
     
@@ -332,7 +350,7 @@ input:first-child{
         width: 86%;
 	}
 
-    .criaPerguntas{
+    .criar{
         width: 100%;
         margin-bottom: 29px;
      
