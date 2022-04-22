@@ -1,12 +1,12 @@
 
 body{
-    background-color: #E5E5E5;
+    background-color: #FAFAFA;
+    font-family: 'Roboto', sans-serif;
 }
 
-.infBasic{
+/* .infBasic{
 
-  
-}
+} */
 
 .top{
     background-color: #EC362D;
@@ -17,7 +17,6 @@ body{
     align-items: center;
     color: #FFFFFF;
     font-size: 37px;
-    
 }
 
 h2{
@@ -81,17 +80,241 @@ input:first-child{
 
 .space{
   
-    margin-bottom: 30px;
+    margin-bottom: 30px;}
+    
+/* .pergunta{
+    
+} */
+
+/* --------------------------- Tela 2 - Jogando Quizz --------------------------------- */
+.container-jogando {
+    width: 100%;
+}
+
+.quizz-principal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    height: 227px;
+    width: 100%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.quizz-principal h1 {
+    font-size: 39px;
+    color: #fff;
+    font-weight: 400;
+}
+
+.perguntas-quizz, .final-quizz {
+    width: 759px;
+    margin: 0 auto;
+}
+
+.container-perguntas, .container-final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    margin-top: 42px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+}
+
+.container-perguntas:last-child {
+    margin-bottom: 170px;
+}
+
+.titulo-pergunta, .container-respostas, .container-resultado, .titulo-resultado {
+    width: 94%;
+}
+
+.titulo-pergunta, .titulo-resultado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* background-color: #434CA0; */
+    margin-top: 28px;
+    height: 138px;
+}
+
+.titulo-resultado {
+    background-color: #EC362D;
+}
+
+.titulo-pergunta h3, .titulo-resultado h3 {
+    font-size: 23px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+}
+
+.container-respostas {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    margin-top: 20px;
+    margin-bottom: 35px;
+}
+
+.container-respostas img {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+}
+
+.card-resposta {
+    width: 48%;
+    cursor: pointer;
+    transition: all 300ms ease-in-out;
+}
+
+.card-resposta p {
+    margin-top: 15px;
+    margin-bottom: 25px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+}
+
+.opacity {
+    opacity: 0.3;
+}
+
+.normal {
+    opacity: 1;
+}
+
+.container-resultado {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 20px 0;
+}
+
+.container-resultado img {
+    width: 48%;
+    height: 273px;
+    object-fit: cover;
+}
+
+.texto-resultado {
+    width: 48%;
+}
+
+.container-resultado p {
+    font-size: 19px;
+    font-weight: bold;
+    color: #484848;
+}
+
+.container-final {
+    margin-bottom: 57px;
+}
+
+.buttons-final {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.reiniciar-quizz {
+    background-color: #EC362D;
+    color: #FFF5F4;
+    font-size: 21px;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    border-radius: 15px;
+    width: 260px;
+    height: 52px;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.voltar-home {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    height: 44px;
+    width: 219px;
+    color: #818181;
+    font-size: 21px;
+    font-weight: 400;
+    margin-bottom: 85px;
+    cursor: pointer;
+}
+
+.reiniciar-quizz:hover, .voltar-home:hover {
+    filter: brightness(95%);
 }
 
 
+/*  --------------Responsivo---------------  */
 
-
-
-
-
-@media (max-width: 800px) {
 	
+
+
+@media (max-width: 1100px) {
+    .perguntas-quizz, .final-quizz {
+        width: 100%;
+    }
+
+    .titulo-pergunta {
+        height: 89px;
+    }
+
+    .quizz-principal {
+        height: 142px;
+    }
+
+    .quizz-principal h1 {
+        font-size: 19px;
+    }
+
+    .container-respostas img {
+        height: 80%;
+    }
+
+    .container-respostas {
+        margin-bottom: 23px;
+    }
+
+    .titulo-pergunta h3, .titulo-resultado h3 {
+        font-size: 19px;
+    }
+
+    .card-resposta p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        margin-top: 5px;
+    }
+
+    .container-resultado p {
+        font-size: 1rem;
+    }
+
+    .container-resultado {
+        flex-direction: column;
+    }
+
+    .container-resultado img, .texto-resultado {
+        width: 100%;
+    }
+
+    .texto-resultado {
+        margin-top: 15px;
+    }
+
+
     h2{
         margin-top: 37px;
         margin-bottom: 29px;
@@ -113,5 +336,5 @@ input:first-child{
         width: 100%;
         margin-bottom: 29px;
      
-    }
+}
 }
