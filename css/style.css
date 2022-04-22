@@ -199,6 +199,7 @@ input:first-child{
     font-size: 20px;
     font-weight: bold;
     color: #000;
+    word-wrap: break-word;
 }
 
 .opacity {
@@ -224,6 +225,7 @@ input:first-child{
 
 .texto-resultado {
     width: 48%;
+    word-wrap: break-word;
 }
 
 .container-resultado p {

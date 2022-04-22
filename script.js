@@ -457,18 +457,18 @@ function obterQuizz(id) {
 let count = 0;
 let countAcertos = 0;
 
-function selecionarResposta(resposta, id) {
+function selecionarResposta(resposta, perguntaId) {
     if(resposta.classList.contains('true')) countAcertos++
 
-    for(let i = 0; i < document.querySelectorAll(`.card-resposta.${id}`).length; i++) {
-        if(document.querySelectorAll(`.card-resposta.${id}`)[i] !== resposta) {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].classList.add('opacity')
+    for(let i = 0; i < document.querySelectorAll(`.card-resposta.${perguntaId}`).length; i++) {
+        if(document.querySelectorAll(`.card-resposta.${perguntaId}`)[i] !== resposta) {
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].classList.add('opacity')
         }
 
-        if(document.querySelectorAll(`.card-resposta.${id}`)[i].classList.contains('true')) {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = '#009C22'
+        if(document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].classList.contains('true')) {
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].querySelector('p').style.color = '#009C22'
         } else {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = '#FF0B0B'
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].querySelector('p').style.color = '#FF0B0B'
         }
     }
 
@@ -483,7 +483,7 @@ function selecionarResposta(resposta, id) {
             document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
         }, 2000)
     }
-    document.querySelectorAll(`.card-resposta.${id}`).forEach(card => card.removeAttribute('onclick'));
+    document.querySelectorAll(`.card-resposta.${perguntaId}`).forEach(card => card.removeAttribute('onclick'));
 }
 
 function finalizarQuizz() {
@@ -559,8 +559,27 @@ function carregarTodosQuizzes() {
         }
     })
 }
-carregarTodosQuizzes()
 
-// function carregarQuizzesUsuario() {
-//     const promise = 
-// }
+function carregarQuizzesUsuario() {
+    let getIds = JSON.parse(localStorage.getItem('localIds'))
+    
+    if(localStorage.getItem('localIds') !== null) {
+        document.querySelector('.sem-quizzes').classList.add('escondido')
+        document.querySelector('.com-quizzes').classList.remove('escondido')
+    }
+    
+    for(let i = 0; i < getIds.length; i++) {
+        let promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${getIds[i]}`)
+        promise.then(response => {
+            document.querySelector('.com-quizzes .seus-quizzes').innerHTML += `
+            <div class="card-quizz" style="${background(response.data.image, opacidadeLinearBottom, true)}"
+            onclick="obterQuizz(${response.data.id})">
+            <h3>${response.data.title}</h3>
+            </div>
+            `
+        })
+    }
+}
+
+carregarTodosQuizzes()
+carregarQuizzesUsuario()
