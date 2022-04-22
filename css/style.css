@@ -28,6 +28,13 @@ justify-content: center;
 font-size: 23px;
 }
 
+.perguntaI h3{
+    margin-left: 17px;
+    margin-bottom: 20px;
+    padding-top: 27px;
+    font-size: 20px;
+}
+
 .infQuizz{
     width: 42%;
     height: 256px;
@@ -68,10 +75,14 @@ input:first-child{
     display: none;
   }
 
-.pergunta{
-    
+.perguntaI{
+    height: 870px;
 }
 
+.space{
+  
+    margin-bottom: 30px;
+}
 
 
 
@@ -97,4 +108,10 @@ input:first-child{
    
         width: 86%;
 	}
+
+    .criaPerguntas{
+        width: 100%;
+        margin-bottom: 29px;
+     
+    }
 }
