@@ -17,6 +17,8 @@ body{
     align-items: center;
     color: #FFFFFF;
     font-size: 37px;
+    font-weight: bold;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 h2{
@@ -78,10 +80,6 @@ input:first-child{
     font-size: 21px;
     color: #FFF5F4;
 }
-
-.escondido {
-    display: none;
-  }
 
 .perguntaI{
     height: 870px;
@@ -275,6 +273,160 @@ input:first-child{
     filter: brightness(95%);
 }
 
+/* --------------------------- Tela 1 - Tela de Quizzes --------------------------------- */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.quizzes {
+    width: 1051px;
+}
+
+.sem-quizzes {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 181px;
+    width: 100%;
+    border: 1px dashed #D5D5D5;
+    border-radius: 5px;
+    margin: 77px 0;
+}
+
+.sem-quizzes h3 {
+    width: 250px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 400;
+    color: #B9B9B9;
+}
+
+.sem-quizzes button {
+    border-radius: 50px;
+    outline: none;
+    border: 1px dashed #EC362D;
+    width: 151px;
+    height: 40px;
+    color: #EC362D;
+    background-color: transparent;
+    font-size: 21px;
+    cursor: pointer;
+    transition: all 200ms ease-in-out;
+}
+
+.sem-quizzes button:hover {
+    color: #FAFAFA;
+    background-color: #EC362D;
+}
+
+.com-quizzes {
+    margin-top: 69px;
+    margin-bottom: 48px;
+}
+
+.com-quizzes > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.com-quizzes > div:last-child {
+    overflow-x: scroll;
+}
+
+.com-quizzes > div::-webkit-scrollbar {
+    height: 5px;
+} 
+  
+.com-quizzes > div::-webkit-scrollbar-thumb {   
+    background-color: #b5b5b5;   
+}
+
+.com-quizzes h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #000;
+    margin-right: 17px;
+}
+
+.com-quizzes ion-icon {
+    font-size: 31px;
+    color: #EC362D;
+    cursor: pointer;
+}
+
+.com-quizzes .card-quizz {
+    margin-right: 13px;
+    margin-top: 0;
+}
+
+.todos-quizzes h1 {
+    color: #000;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.todos-quizzes {
+    width: 1051px;
+}
+
+.todos-quizzes > div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    height: 380px;
+    overflow-y: scroll;
+}
+
+.todos-quizzes > div::-webkit-scrollbar {
+    width: 5px;
+} 
+  
+.todos-quizzes > div::-webkit-scrollbar-thumb {   
+    background-color: #b5b5b5;   
+}
+
+.card-quizz {
+    display: flex;
+    align-items: flex-end;
+
+    min-width: 340px;
+    max-width: 340px;
+    height: 181px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), 
+    url('https://lumiere-a.akamaihd.net/v1/images/original_1628718691_los-simpson---star_-_3_e73a2761.jpeg?region=0,379,1300,732');
+    object-fit: cover;
+    background-size: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 13px;
+}
+
+.todos-quizzes .card-quizz:nth-child(1), 
+.todos-quizzes .card-quizz:nth-child(2), 
+.todos-quizzes .card-quizz:nth-child(3) {
+    margin-top: 0;
+}
+
+.card-quizz h3 {
+    margin: 0 18px;
+    margin-bottom: 10px;
+    font-size: 19px;
+    font-weight: 300;
+    color: #fff;
+}
+
+.escondido {
+    display: none;
+}
+
 
 /*  --------------Responsivo---------------  */
 
@@ -282,6 +434,37 @@ input:first-child{
 
 
 @media (max-width: 1100px) {
+    /* Tela 1 */
+    .quizzes, .todos-quizzes {
+        width: 90%;
+    }
+
+    .todos-quizzes > div {
+        height: auto;
+    }
+
+    .card-quizz {
+        min-width: 100%;
+        margin-bottom: 14px;
+    }
+
+    .sem-quizzes {
+        margin: 31px 0;
+    }
+
+    .com-quizzes {
+        margin: 38px 0;
+    }
+
+    .com-quizzes > div:last-child {
+        flex-direction: column;
+    }
+
+    .com-quizzes .card-quizz {
+        margin-right: 0;
+    }
+
+    /* Tela 2 */
     .perguntas-quizz, .final-quizz {
         width: 100%;
     }
@@ -355,4 +538,10 @@ input:first-child{
         margin-bottom: 29px;
      
 }
+}
+
+@media (max-width: 375px) {
+    .card-quizz {
+        background-size: 150%;
+    }
 }

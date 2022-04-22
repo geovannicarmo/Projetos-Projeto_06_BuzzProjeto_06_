@@ -527,3 +527,10 @@ function voltarHome() {
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
 }
+
+// -------------------- Tela 1 - Tela de Quizzes ------------------------
+
+function criarQuizz() {
+    document.querySelector('.home').classList.add('escondido')
+    document.querySelector('.infBasic').classList.remove('escondido')
+}
