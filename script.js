@@ -439,25 +439,31 @@ comeco()
 // -------------------- Tela 2 - Jogando Quizz ------------------------
 let questoesSortidas = []
 let levels = []
+let idAtual;
 const opacidadeLinear = 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),'
-const background = (response) => `
-    background: ${opacidadeLinear} url(${response.data.image}); 
+const opacidadeLinearBottom = 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),'
+const background = (response, opacidade, center = false) => `
+    background: ${opacidade} url(${response}); 
     background-repeat: no-repeat;
     background-size: 100%;
     object-fit: cover;
+    ${center === true ? 'background-position: center;' : ''}
 `
 
 function embaralhar() {
     return Math.random() - 0.5;
 }
 
-function obterQuizz() {
-    const promise = axios.get(`https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes/${8098}`)
+function obterQuizz(id) {
+    idAtual = id
+    document.querySelector('.home').classList.add('escondido')
+    document.querySelector('.jogando-quizz').classList.remove('escondido')
+    const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
 
     promise.then(response => {
         levels = response.data.levels
         document.querySelector('.container-jogando').innerHTML = `
-            <div class="quizz-principal" style="${background(response)}">
+            <div class="quizz-principal" style="${background(response.data.image, opacidadeLinear)}">
                 <h1>${response.data.title}</h1>
             </div>
             <div class="perguntas-quizz">
@@ -490,22 +496,22 @@ function obterQuizz() {
         }
     })
 }
-obterQuizz()
+
 let count = 0;
 let countAcertos = 0;
 
-function selecionarResposta(resposta, id) {
+function selecionarResposta(resposta, perguntaId) {
     if(resposta.classList.contains('true')) countAcertos++
 
-    for(let i = 0; i < document.querySelectorAll(`.card-resposta.${id}`).length; i++) {
-        if(document.querySelectorAll(`.card-resposta.${id}`)[i] !== resposta) {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].classList.add('opacity')
+    for(let i = 0; i < document.querySelectorAll(`.card-resposta.${perguntaId}`).length; i++) {
+        if(document.querySelectorAll(`.card-resposta.${perguntaId}`)[i] !== resposta) {
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].classList.add('opacity')
         }
 
-        if(document.querySelectorAll(`.card-resposta.${id}`)[i].classList.contains('true')) {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = '#009C22'
+        if(document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].classList.contains('true')) {
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].querySelector('p').style.color = '#009C22'
         } else {
-            document.querySelectorAll(`.card-resposta.${id}`)[i].querySelector('p').style.color = '#FF0B0B'
+            document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].querySelector('p').style.color = '#FF0B0B'
         }
     }
 
@@ -520,7 +526,7 @@ function selecionarResposta(resposta, id) {
             document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
         }, 2000)
     }
-    document.querySelectorAll(`.card-resposta.${id}`).forEach(card => card.removeAttribute('onclick'));
+    document.querySelectorAll(`.card-resposta.${perguntaId}`).forEach(card => card.removeAttribute('onclick'));
 }
 
 function finalizarQuizz() {
@@ -557,7 +563,7 @@ function finalizarQuizz() {
 }
 
 function reiniciarQuizz() {
-    obterQuizz()
+    obterQuizz(idAtual)
     count = 0
     countAcertos = 0
     setTimeout(() => {
@@ -567,6 +573,56 @@ function reiniciarQuizz() {
 }
 
 function voltarHome() {
+    count = 0
+    countAcertos = 0
+    document.querySelector('.finalizar-jogo').innerHTML = ''
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
 }
+
+// -------------------- Tela 1 - Tela de Quizzes ------------------------
+
+function criarQuizz() {
+    document.querySelector('.home').classList.add('escondido')
+    document.querySelector('.infBasic').classList.remove('escondido')
+}
+
+function carregarTodosQuizzes() {
+    const promise = axios.get('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes')
+
+    promise.then(response => {
+        console.log(response.data)
+        for(let i = 0; i < response.data.length; i++) {
+            document.querySelector('.todos-quizzes > div').innerHTML += `
+                <div class="card-quizz" style="${background(response.data[i].image, opacidadeLinearBottom, true)}"
+                    onclick="obterQuizz(${response.data[i].id})">
+                    <h3>${response.data[i].title}</h3>
+                </div>
+            `
+        }
+    })
+}
+
+function carregarQuizzesUsuario() {
+    let getIds = JSON.parse(localStorage.getItem('localIds'))
+    
+    if(localStorage.getItem('localIds') !== null) {
+        document.querySelector('.sem-quizzes').classList.add('escondido')
+        document.querySelector('.com-quizzes').classList.remove('escondido')
+    }
+    
+    for(let i = 0; i < getIds.length; i++) {
+        let promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${getIds[i]}`)
+        promise.then(response => {
+            document.querySelector('.com-quizzes .seus-quizzes').innerHTML += `
+            <div class="card-quizz" style="${background(response.data.image, opacidadeLinearBottom, true)}"
+            onclick="obterQuizz(${response.data.id})">
+            <h3>${response.data.title}</h3>
+            </div>
+            `
+        })
+    }
+}
+
+carregarTodosQuizzes()
+carregarQuizzesUsuario()
