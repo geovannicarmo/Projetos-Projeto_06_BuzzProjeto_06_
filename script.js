@@ -103,11 +103,11 @@ function comeco() {
 
     let element2=document.querySelector(".criaPerguntas")
 
-    console.log(nperguntas)
+    element2.innerHTML=""
    
     for(let i=0; i<nperguntas;i++){
       
-   
+       
    
    renderizaCriarPerguntas[i] =`
 
@@ -192,8 +192,7 @@ let answers=[];
 if (RespCprreta!=="" || urlImg!==""){
 
     if(!isImage(urlImg) || RespCprreta===""){
-        console.log(urlImg)
-        console.log(isImage(urlImg))
+      
         return alert("falha1")
     }
 
@@ -279,8 +278,7 @@ questions.push(objetopergunta)
 
     }
     
-    console.log(questions)
-
+   
     return criarNiveis()
 
   
@@ -299,6 +297,8 @@ questions.push(objetopergunta)
     let element3=document.querySelector(".criaNiveis")
     element3.classList.remove("escondido")
     let renderizaCriarniveis=[]
+
+    element3.innerHTML=""
 
     for(let id=0; id<nniveis; id++){
 
@@ -328,7 +328,7 @@ element3.innerHTML+=renderizaCriarniveis[id]
 </div`
 element3.innerHTML+=butãoEnviaperguntas
 
-console.log(element3)
+
    
 }
 
@@ -353,7 +353,7 @@ function tratarNiveis(){
 
     
     if (acertoMinimo==0){
-        console.log("cade")
+       
         cont++
     }
 
@@ -373,7 +373,7 @@ function tratarNiveis(){
             return alert("Preencha os dados corretamente.")
         }
 
-    console.log(levels)
+   
 
     enviaQuizz ={
         title: titulo,
@@ -382,7 +382,7 @@ function tratarNiveis(){
         levels
 
     }
-    console.log(enviaQuizz)
+    
 
     const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', enviaQuizz);
 
@@ -427,11 +427,30 @@ function abrirQuizzCriado(){
     console.log("vai")
 }
 
+let ids=[];
+
 function respostaAPI(resposta){
-    console.log(resposta)
+    console.log(resposta.data.id)
+  
+
+    if(localStorage.getItem('localIds') === null ||localStorage.getItem('localIds')==="undefined") {
+        localStorage.setItem('localIds', JSON.stringify(ids))
+        console.log("entrei")
+        console.log(localStorage.setItem('localIds', JSON.stringify(ids)))
+    }
+console.log(JSON.parse(localStorage.getItem('localIds')))
+    let getIds = JSON.parse(localStorage.getItem('localIds'))
+
+    getIds.push(resposta.data.id)
+    localStorage.setItem('localIds', JSON.stringify(getIds))
 }
 
+
+
 comeco()
+console.log(localStorage.getItem('localIds'))
+console.log(undefined)
+
 
 
 
