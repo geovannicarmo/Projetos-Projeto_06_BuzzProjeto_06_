@@ -48,7 +48,7 @@ function infQuizz(){
     console.log(nperguntas)
 
 
-    if(titulo.length<20 || titulo.length>65 || nperguntas<1 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url)){
+    if(titulo.length<20 || titulo.length>65 || nperguntas<3 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url)){
        
         
 
@@ -164,7 +164,7 @@ element2.innerHTML+=butãoEnviaperguntas
 
 
  
- let idx=2/*numeto de perguntas*/ 
+  
  let questions=[]
  
   
@@ -383,10 +383,53 @@ function tratarNiveis(){
 
     }
     console.log(enviaQuizz)
+
+    const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', enviaQuizz);
+
+    requisicao.then(respostaAPI);
+    QuizzPronto()
 }
 
 
 
+function QuizzPronto(){
+
+
+    let element3=document.querySelector(".criaNiveis")
+    element3.classList.add("escondido")
+
+let element4=document.querySelector(".sucessoQuizz")
+element4.classList.remove("escondido")
+
+
+Quizzhtml =`<h2>Seu quizz está pronto!</h2>
+<div class="imagiQuizzCriado">
+<img onclick="abrirQuizzCriado()" src="${url}" alt="">
+
+<p id="legendaimagiQuizzCriado" >${titulo}</p>
+
+</div>
+
+<div onclick="abrirQuizzCriado()" class="buttonInf buttonAcessarQuizz">
+
+    <p>Acessar Quizz</p>
+
+</div>
+
+<p id="voltaHome" onclick="voltarHome()">Voltar pra home</p>`
+
+element4.innerHTML=Quizzhtml
+
+}
+
+
+function abrirQuizzCriado(){
+    console.log("vai")
+}
+
+function respostaAPI(resposta){
+    console.log(resposta)
+}
 
 comeco()
 

@@ -79,6 +79,10 @@ input:first-child{
     color: #FFF5F4;
 }
 
+.buttonAcessarQuizz{
+    width: 16%;
+}
+
 .escondido {
     display: none;
   }
@@ -271,9 +275,43 @@ input:first-child{
     cursor: pointer;
 }
 
+.imagiQuizzCriado img{
+    
+    width: 35%;
+}
+
+.imagiQuizzCriado{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 45px;
+    
+  
+}
+
+#legendaimagiQuizzCriado{
+    position: absolute;
+    bottom: 10px;
+    font-size: 23px;
+    color: #FFFFFF;
+   
+}
+
+#voltaHome{
+    margin-top: 9px;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    color: #818181;
+}
+
+
 .reiniciar-quizz:hover, .voltar-home:hover {
     filter: brightness(95%);
 }
+
+
+
 
 
 /*  --------------Responsivo---------------  */
@@ -336,6 +374,7 @@ input:first-child{
     h2{
         margin-top: 37px;
         margin-bottom: 29px;
+        font-weight: bold;
        
     }
 
@@ -350,9 +389,17 @@ input:first-child{
         width: 86%;
 	}
 
+    .buttonAcessarQuizz{
+        width: 59%;
+    }
+
     .criar{
         width: 100%;
         margin-bottom: 29px;
-     
-}
+     }
+
+     .imagiQuizzCriado img{
+    
+        width: 91%;
+    }
 }
