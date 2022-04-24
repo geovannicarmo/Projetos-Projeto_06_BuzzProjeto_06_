@@ -111,9 +111,12 @@ function comeco() {
    
    renderizaCriarPerguntas[i] =`
 
- <div class="infQuizz perguntaI classe${i}">
+ <div class="infQuizz perguntaI classe${i} ${i === 0 ? 'pergunta-selecionada' : ''}">
 
-    <h3>Pergunta ${i+1}</h3>
+    <div>
+        <h3>Pergunta ${i+1}</h3>
+        <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
+    </div>
 
     <input type="text" id="tesxtPergunta" name="firstname" placeholder="    Texto da pergunta">
     <input type="text" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
@@ -161,6 +164,30 @@ element2.innerHTML+=butãoEnviaperguntas
 
 
   }
+
+function exibirPergunta(elemento) {
+    const perguntaSelecionada = document.querySelector('.pergunta-selecionada')
+
+    if(perguntaSelecionada !== null) {
+        perguntaSelecionada.classList.remove('pergunta-selecionada')
+    }
+    elemento.parentElement.parentElement.classList.add('pergunta-selecionada')
+    setTimeout(() => {
+        elemento.parentElement.querySelector('h3').scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 500)
+}
+
+function exibirNivel(elemento) {
+    const nivelSelecionado = document.querySelector('.nivel-selecionado')
+
+    if(nivelSelecionado !== null) {
+        nivelSelecionado.classList.remove('nivel-selecionado')
+    }
+    elemento.parentElement.parentElement.classList.add('nivel-selecionado')
+    setTimeout(() => {
+        elemento.parentElement.querySelector('h3').scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 500)
+}
 
 
  
@@ -302,9 +329,12 @@ questions.push(objetopergunta)
 
     for(let id=0; id<nniveis; id++){
 
-   renderizaCriarniveis[id] =`<div class="infQuizz niveisI classeN${id}">
+   renderizaCriarniveis[id] =`<div class="infQuizz niveisI classeN${id} ${id === 0 ? 'nivel-selecionado': ''}">
 
-   <h3>Nível ${id+1}</h3>
+   <div>
+        <h3>Nível ${id+1}</h3>
+        <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
+   </div>
 
    <input type="text" id="TituloNivel" name="firstname" placeholder="    Título do nível">
 
