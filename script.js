@@ -3,6 +3,8 @@ let nniveis;
 let titulo;
 let url;
 let nperguntas=1;
+let questions=[];
+let answers=[];
 
 
 
@@ -71,12 +73,12 @@ function comeco() {
     pagina1 = `
 <h2>Comece pelo começo</h2>
 <div class="infQuizz">
-    <input type="text" id="titulo" name="firstname" placeholder="    Título do seu quizz">
-    <input type="text" id="url" name="firstname" placeholder="    URL da imagem do seu quizz
+    <input type="text" id="titulo" name="firstname" placeholder="Título do seu quizz">
+    <input type="text" id="url" name="firstname" placeholder="URL da imagem do seu quizz
     ">
-    <input type="text" id="nperguntas" name="firstname" placeholder="    Quantidade de perguntas do quizz
+    <input type="text" id="nperguntas" name="firstname" placeholder="Quantidade de perguntas do quizz
     ">
-    <input type="text" id="nniveis" name="firstname" placeholder="    Quantidade de níveis do quizz
+    <input type="text" id="nniveis" name="firstname" placeholder="Quantidade de níveis do quizz
     ">
 </div>
 <div onclick="infQuizz()" class="buttonInf">
@@ -90,6 +92,7 @@ function comeco() {
 
 
   function criarPerguntas(){ 
+    renderizaCriarPerguntas = []
 
     let element2=document.querySelector(".criaPerguntas")
 
@@ -105,27 +108,27 @@ function comeco() {
         <h3>Pergunta ${i+1}</h3>
         <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
     </div>
-    <input type="text" id="tesxtPergunta" name="firstname" placeholder="    Texto da pergunta">
-    <input type="color" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
+    <input type="text" id="tesxtPergunta" name="firstname" placeholder="Texto da pergunta">
+    <input type="color" id="corFundo" name="firstname" placeholder="Cor de fundo da pergunta
     ">
     <h3>Resposta correta</h3>
-    <input type="text" id="RespCprreta" name="firstname" placeholder="    Resposta correta
+    <input type="text" id="RespCprreta" name="firstname" placeholder="Resposta correta
     ">
-    <input type="text" id="urlImg" name="firstname" placeholder="    URL da imagem
+    <input type="text" id="urlImg" name="firstname" placeholder="URL da imagem
     ">
     <h3>Respostas incorretas
     </h3>
-    <input type="text" id="incorreta1" name="firstname" placeholder="    Resposta incorreta 1
+    <input type="text" id="incorreta1" name="firstname" placeholder="Resposta incorreta 1
     ">
-    <input type="text" class="space" id="urlincorreta1" name="firstname" placeholder="    URL da imagem 1
+    <input type="text" class="space" id="urlincorreta1" name="firstname" placeholder="URL da imagem 1
     ">
-    <input type="text" id="incorreta2" name="firstname" placeholder="    Resposta incorreta 2
+    <input type="text" id="incorreta2" name="firstname" placeholder="Resposta incorreta 2
     ">
-    <input type="text" class="space" id="urlincorreta2" name="firstname" placeholder="    URL da imagem 2
+    <input type="text" class="space" id="urlincorreta2" name="firstname" placeholder="URL da imagem 2
     ">
-    <input type="text" id="incorreta3" name="firstname" placeholder="    Resposta incorreta 3
+    <input type="text" id="incorreta3" name="firstname" placeholder="Resposta incorreta 3
     ">
-    <input type="text" id="urlincorreta3" name="firstname" placeholder="    URL da imagem 3
+    <input type="text" id="urlincorreta3" name="firstname" placeholder="URL da imagem 3
     ">
 </div>`
 
@@ -170,13 +173,13 @@ function exibirNivel(elemento) {
 
  
   
- let questions=[]
  
   
   function tratarPerguntas(){
+    questions = []
    
     for(let idx=0; idx<nperguntas; idx++){
-   
+    answers = []
 
     classecriaPerguntas =document.querySelector(".criaPerguntas")
 
@@ -192,21 +195,21 @@ function exibirNivel(elemento) {
 
     urlImg= classecriaPerguntas.querySelector(`.classe${idx} #urlImg`).value
 
-let answers=[];
+if (RespCprreta!=="" && urlImg!==""){
 
-if (RespCprreta!=="" || urlImg!==""){
-
-    if(!isImage(urlImg) || RespCprreta===""){
+    if(!isImage(urlImg) || RespCprreta==="" || urlImg === ""){
       
         return alert("falha1")
     }
 
-    answers.push(  { 
+    answers.push({ 
         text: RespCprreta,
         image: urlImg,
         isCorrectAnswer: true
     })
 
+} else {
+    return alert('falha1 dois campos')
 }
 
     incorreta1= classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`).value
@@ -278,10 +281,14 @@ let objetopergunta ={
 
 }
 
-questions.push(objetopergunta)
+if(answers.length < 2) {
+    return alert('preencha pelo menos 2 campos')
+} 
+    
+    questions.push(objetopergunta)
 
 
-    }
+}
     
    
     return criarNiveis()
@@ -312,13 +319,13 @@ questions.push(objetopergunta)
         <h3>Nível ${id+1}</h3>
         <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
-   <input type="text" id="TituloNivel" name="firstname" placeholder="    Título do nível">
-   <input type="text" id="acertoMinimo" name="firstname" placeholder="    % de acerto mínima
+   <input type="text" id="TituloNivel" name="firstname" placeholder="Título do nível">
+   <input type="text" id="acertoMinimo" name="firstname" placeholder="% de acerto mínima
    ">
-   <input type="text" id="imagemdonivel" name="firstname" placeholder="    URL da imagem do nível
+   <input type="text" id="imagemdonivel" name="firstname" placeholder="URL da imagem do nível
    ">
-   <input type="text"  id="descricaoNivel" name="firstname" placeholder="    Descrição do nível
-   ">
+   <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
+   "></textarea>
 </div>`
 element3.innerHTML+=renderizaCriarniveis[id]
 
@@ -388,13 +395,11 @@ function tratarNiveis(){
     const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', enviaQuizz);
 
     requisicao.then(respostaAPI);
-    QuizzPronto()
 }
 
 
 
-function QuizzPronto(){
-
+function QuizzPronto(id){
 
     let element3=document.querySelector(".criaNiveis")
     element3.classList.add("escondido")
@@ -405,10 +410,10 @@ element4.classList.remove("escondido")
 
 Quizzhtml =`<h2>Seu quizz está pronto!</h2>
 <div class="imagiQuizzCriado">
-<img onclick="abrirQuizzCriado()" src="${url}" alt="">
+<img onclick="obterQuizz(${id})" src="${url}" alt="">
 <p id="legendaimagiQuizzCriado" >${titulo}</p>
 </div>
-<div onclick="abrirQuizzCriado()" class="buttonInf buttonAcessarQuizz">
+<div onclick="obterQuizz(${id})" class="buttonInf buttonAcessarQuizz">
     <p>Acessar Quizz</p>
 </div>
 <p id="voltaHome" onclick="voltarHome()">Voltar pra home</p>`
@@ -438,6 +443,7 @@ console.log(JSON.parse(localStorage.getItem('localIds')))
 
     getIds.push(resposta.data.id)
     localStorage.setItem('localIds', JSON.stringify(getIds))
+    QuizzPronto(resposta.data.id)
 }
 
 
@@ -470,6 +476,7 @@ function embaralhar() {
 
 function obterQuizz(id) {
     idAtual = id
+    document.querySelector(".sucessoQuizz").classList.add('escondido')
     document.querySelector('.home').classList.add('escondido')
     document.querySelector('.jogando-quizz').classList.remove('escondido')
     const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
@@ -593,6 +600,12 @@ function voltarHome() {
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
     document.querySelector('.sucessoQuizz').classList.add('escondido')
+    document.querySelector("#titulo").value = ''
+    document.querySelector("#url").value = ''
+    document.querySelector("#nperguntas").value = ''
+    document.querySelector("#nniveis").value = ''
+    carregarTodosQuizzes()
+    carregarQuizzesUsuario()
 }
 
 // -------------------- Tela 1 - Tela de Quizzes ------------------------
@@ -603,6 +616,7 @@ function criarQuizz() {
 }
 
 function carregarTodosQuizzes() {
+    document.querySelector('.todos-quizzes > div').innerHTML = ''
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes')
 
     promise.then(response => {
@@ -619,6 +633,7 @@ function carregarTodosQuizzes() {
 }
 
 function carregarQuizzesUsuario() {
+    document.querySelector('.com-quizzes .seus-quizzes').innerHTML = ''
     let getIds = JSON.parse(localStorage.getItem('localIds'))
     
     if(localStorage.getItem('localIds') !== null) {

@@ -52,14 +52,24 @@ font-size: 23px;
  
 }
 
-input{
-width: 94%;
+input {
 height: 46px;
+width: 89%;
 margin-bottom: 9px;
 margin-left: 2.7%;
 border: 1px solid #D1D1D1;
 border-radius: 5px;
+outline: none;
+font-size: 19px;
+padding: 0 20px;
+}
 
+input[type="color"] {
+    width: 94%;
+}
+
+input::placeholder, textarea::placeholder {
+    font-style: italic;
 }
 
 input:first-child{
@@ -130,7 +140,7 @@ input:first-child{
 }
 
 .niveisI.nivel-selecionado {
-    height: 450px;
+    height: 500px;
 }
 
 .space{
@@ -139,7 +149,17 @@ input:first-child{
 }
 
 #descricaoNivel{
-    height: 177px;
+    resize: none;
+    width: 91%;
+    margin-bottom: 9px;
+    margin-left: 2.7%;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    font-style: italic;
+    font-size: 19px;
+    font-family: 'Roboto', sans-serif;
+    outline: none;
+    padding-left: 20px;
 }
     
 /* .pergunta{
@@ -473,17 +493,18 @@ input:first-child{
 
 .card-quizz {
     display: flex;
+    justify-content: center;
     align-items: flex-end;
 
     min-width: 340px;
     max-width: 340px;
     height: 181px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), 
+    /* background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%), 
     url('https://lumiere-a.akamaihd.net/v1/images/original_1628718691_los-simpson---star_-_3_e73a2761.jpeg?region=0,379,1300,732');
     object-fit: cover;
     background-size: 100%;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     border-radius: 5px;
     cursor: pointer;
     margin-top: 13px;
@@ -498,11 +519,14 @@ input:first-child{
 }
 
 .card-quizz h3 {
-    margin: 0 18px;
     margin-bottom: 10px;
     font-size: 19px;
     font-weight: 300;
     color: #fff;
+    width: 90%;
+    height: fit-content;
+    word-wrap: break-word;
+    
 }
 
 .escondido {
