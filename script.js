@@ -1,8 +1,10 @@
 let renderizaCriarPerguntas=[]
+renderizaCriarniveis=[]
+renderizaCriarniveisT=[]
 let nniveis;
 let titulo;
 let url;
-let nperguntas=1;
+let nperguntas;
 
 
 
@@ -18,7 +20,7 @@ function isImage(url){
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
   }
 
-  function isclolor(corFundo){
+ /* function isclolor(corFundo){
       if(corFundo[0]!=="#" || corFundo.length!==7){
           return false;
       }
@@ -33,7 +35,7 @@ function isImage(url){
           return false
       }
 
-  }
+  }*/
 
 function infQuizz(){
     titulo=document.querySelector("#titulo").value
@@ -98,14 +100,54 @@ function comeco() {
 }
 
 
+criarPerguntas()
+
+
+
+    function   renderizaminiaturas(){
+        let miniatura=[]
+        let element2=document.querySelector(".criaPerguntas")
+        element2.innerHTML=`<h2>Crie suas perguntas</h2>`;
+        
+    
+    for(let id=0; id<nperguntas; id++){
+
+        miniatura[id] =`<div class="miniatura classs${id}">
+        <div class="miniaturainner infQuizz">
+        <h3>Pergunta ${id+1}</h3>
+        <ion-icon onclick="abrePergunta(${id})" name="create-outline"></ion-icon>
+        </div>
+ 
+        </div>
+        `
+        element2.innerHTML+=miniatura[id]
+ 
+     }
+
+     let butãoEnviaperguntas = `<div onclick="tratarPerguntas()" class="buttonInf">
+
+     <p>Prosseguir pra criar níveis</p>
+ 
+ </div`
+ element2.innerHTML+=butãoEnviaperguntas
+
+
+    }
+
+    function abrePergunta(ver){
+        element5= document.querySelector(`.classs${ver}`)
+        element5.innerHTML=renderizaCriarPerguntas[ver]
+    }
+
 
   function criarPerguntas(){ 
+    
 
     let element2=document.querySelector(".criaPerguntas")
 
-    element2.innerHTML=""
+
    
-    for(let i=0; i<nperguntas;i++){
+    for(let i=0; i<nperguntas; i++){
       
        
    
@@ -116,7 +158,7 @@ function comeco() {
     <h3>Pergunta ${i+1}</h3>
 
     <input type="text" id="tesxtPergunta" name="firstname" placeholder="    Texto da pergunta">
-    <input type="text" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
+    <input type="color" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
     ">
 
     <h3>Resposta correta</h3>
@@ -146,18 +188,9 @@ function comeco() {
 
 </div>`
 
-
-element2.innerHTML+=renderizaCriarPerguntas[i]
     }
 
-    let butãoEnviaperguntas = `<div onclick="tratarPerguntas()" class="buttonInf">
-
-    <p>Prosseguir pra criar níveis</p>
-
-</div`
-element2.innerHTML+=butãoEnviaperguntas
-
-
+renderizaminiaturas()
 
 
   }
@@ -180,7 +213,7 @@ element2.innerHTML+=butãoEnviaperguntas
 
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
-    if(tesxtPergunta.length<20 || !isclolor(corFundo)){
+    if(tesxtPergunta.length<20/* || !isclolor(corFundo)*/){
         return alert("falha")}
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
@@ -281,6 +314,7 @@ questions.push(objetopergunta)
    
     return criarNiveis()
 
+
   
 
     
@@ -317,7 +351,12 @@ questions.push(objetopergunta)
    <input type="text"  id="descricaoNivel" name="firstname" placeholder="    Descrição do nível
    ">
 </div>`
+
+
 element3.innerHTML+=renderizaCriarniveis[id]
+
+console.log(renderizaCriarniveis[id])
+renderizaCriarniveisT.push(renderizaCriarniveis[id])
 
     }
 
@@ -328,8 +367,51 @@ element3.innerHTML+=renderizaCriarniveis[id]
 </div`
 element3.innerHTML+=butãoEnviaperguntas
 
+console.log(renderizaCriarniveis[0])
+console.log("red cria n")
 
-   
+renderizaminiaturasniveis()
+ 
+}
+
+
+function   renderizaminiaturasniveis(){
+    let miniaturaniveis=[]
+    let element3=document.querySelector(".criaNiveis")
+    element3.innerHTML=`<h2>Agora, decida os níveis</h2>`;
+    
+
+for(let id=0; id<nniveis; id++){
+
+    miniaturaniveis[id] =`<div class="miniatura classn${id}">
+    <div class="miniaturainner infQuizz">
+    <h3>Nivel ${id+1}</h3>
+    <ion-icon onclick="abreniveis(${id})" name="create-outline"></ion-icon>
+    </div>
+
+    </div>
+    `
+    element3.innerHTML+=miniaturaniveis[id]
+
+ }
+
+ let butãoEnviaNiveis = `<div onclick="tratarNiveis()" class="buttonInf">
+
+ <p>Finalizar Quizz</p>
+
+</div`
+element3.innerHTML+=butãoEnviaNiveis
+
+
+}
+
+function abreniveis(ver){
+    element6= document.querySelector(`.classn${ver}`)
+        
+
+    element6.innerHTML=renderizaCriarniveisT[ver]
+
+    console.log(element6)
 }
 
 
