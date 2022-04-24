@@ -1,10 +1,8 @@
 let renderizaCriarPerguntas=[]
-renderizaCriarniveis=[]
-renderizaCriarniveisT=[]
 let nniveis;
 let titulo;
 let url;
-let nperguntas;
+let nperguntas=1;
 
 
 
@@ -20,13 +18,11 @@ function isImage(url){
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
   }
 
- /* function isclolor(corFundo){
+  /*function isclolor(corFundo){
       if(corFundo[0]!=="#" || corFundo.length!==7){
           return false;
       }
-
       let inputString = corFundo.replace(/^./, ""); 
-
       let re = /[0-9A-Fa-f]{6}/g;
       
       if(re.test(inputString)) {
@@ -34,7 +30,6 @@ function isImage(url){
       } else {
           return false
       }
-
   }*/
 
 function infQuizz(){
@@ -74,11 +69,8 @@ function comeco() {
 
 
     pagina1 = `
-
 <h2>Comece pelo começo</h2>
-
 <div class="infQuizz">
-
     <input type="text" id="titulo" name="firstname" placeholder="    Título do seu quizz">
     <input type="text" id="url" name="firstname" placeholder="    URL da imagem do seu quizz
     ">
@@ -86,13 +78,9 @@ function comeco() {
     ">
     <input type="text" id="nniveis" name="firstname" placeholder="    Quantidade de níveis do quizz
     ">
-
 </div>
-
 <div onclick="infQuizz()" class="buttonInf">
-
     <p>Prosseguir pra criar perguntas</p>
-
 </div>`
 
     element.innerHTML = pagina1
@@ -100,100 +88,57 @@ function comeco() {
 }
 
 
-criarPerguntas()
-
-
-
-    function   renderizaminiaturas(){
-        let miniatura=[]
-        let element2=document.querySelector(".criaPerguntas")
-        element2.innerHTML=`<h2>Crie suas perguntas</h2>`;
-        
-    
-    for(let id=0; id<nperguntas; id++){
-
-        miniatura[id] =`<div class="miniatura classs${id}">
-        <div class="miniaturainner infQuizz">
-        <h3>Pergunta ${id+1}</h3>
-        <ion-icon onclick="abrePergunta(${id})" name="create-outline"></ion-icon>
-        </div>
- 
-        </div>
-        `
-        element2.innerHTML+=miniatura[id]
- 
-     }
-
-     let butãoEnviaperguntas = `<div onclick="tratarPerguntas()" class="buttonInf">
-
-     <p>Prosseguir pra criar níveis</p>
- 
- </div`
- element2.innerHTML+=butãoEnviaperguntas
-
-
-    }
-
-    function abrePergunta(ver){
-        element5= document.querySelector(`.classs${ver}`)
-        element5.innerHTML=renderizaCriarPerguntas[ver]
-    }
-
 
   function criarPerguntas(){ 
-    
 
     let element2=document.querySelector(".criaPerguntas")
 
-
+    element2.innerHTML=""
    
-    for(let i=0; i<nperguntas; i++){
+    for(let i=0; i<nperguntas;i++){
       
        
    
    renderizaCriarPerguntas[i] =`
-
  <div class="infQuizz perguntaI classe${i} ${i === 0 ? 'pergunta-selecionada' : ''}">
-
     <div>
         <h3>Pergunta ${i+1}</h3>
         <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
     </div>
-
     <input type="text" id="tesxtPergunta" name="firstname" placeholder="    Texto da pergunta">
     <input type="color" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
     ">
-
     <h3>Resposta correta</h3>
-
     <input type="text" id="RespCprreta" name="firstname" placeholder="    Resposta correta
     ">
     <input type="text" id="urlImg" name="firstname" placeholder="    URL da imagem
     ">
-
     <h3>Respostas incorretas
     </h3>
-
     <input type="text" id="incorreta1" name="firstname" placeholder="    Resposta incorreta 1
     ">
     <input type="text" class="space" id="urlincorreta1" name="firstname" placeholder="    URL da imagem 1
     ">
-
     <input type="text" id="incorreta2" name="firstname" placeholder="    Resposta incorreta 2
     ">
     <input type="text" class="space" id="urlincorreta2" name="firstname" placeholder="    URL da imagem 2
     ">
-
     <input type="text" id="incorreta3" name="firstname" placeholder="    Resposta incorreta 3
     ">
     <input type="text" id="urlincorreta3" name="firstname" placeholder="    URL da imagem 3
     ">
-
 </div>`
 
+
+element2.innerHTML+=renderizaCriarPerguntas[i]
     }
 
-renderizaminiaturas()
+    let butãoEnviaperguntas = `<div onclick="tratarPerguntas()" class="buttonInf">
+    <p>Prosseguir pra criar níveis</p>
+</div`
+element2.innerHTML+=butãoEnviaperguntas
+
+
 
 
   }
@@ -341,7 +286,6 @@ questions.push(objetopergunta)
    
     return criarNiveis()
 
-
   
 
     
@@ -364,84 +308,29 @@ questions.push(objetopergunta)
     for(let id=0; id<nniveis; id++){
 
    renderizaCriarniveis[id] =`<div class="infQuizz niveisI classeN${id} ${id === 0 ? 'nivel-selecionado': ''}">
-
    <div>
         <h3>Nível ${id+1}</h3>
         <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
-
    <input type="text" id="TituloNivel" name="firstname" placeholder="    Título do nível">
-
    <input type="text" id="acertoMinimo" name="firstname" placeholder="    % de acerto mínima
    ">
-
-
    <input type="text" id="imagemdonivel" name="firstname" placeholder="    URL da imagem do nível
    ">
    <input type="text"  id="descricaoNivel" name="firstname" placeholder="    Descrição do nível
    ">
 </div>`
-
-
 element3.innerHTML+=renderizaCriarniveis[id]
-
-console.log(renderizaCriarniveis[id])
-renderizaCriarniveisT.push(renderizaCriarniveis[id])
 
     }
 
     let butãoEnviaperguntas = `<div onclick="tratarNiveis()" class="buttonInf">
-
     <p>Finalizar Quizz</p>
-
 </div`
 element3.innerHTML+=butãoEnviaperguntas
 
-console.log(renderizaCriarniveis[0])
-console.log("red cria n")
 
-renderizaminiaturasniveis()
- 
-}
-
-
-function   renderizaminiaturasniveis(){
-    let miniaturaniveis=[]
-    let element3=document.querySelector(".criaNiveis")
-    element3.innerHTML=`<h2>Agora, decida os níveis</h2>`;
-    
-
-for(let id=0; id<nniveis; id++){
-
-    miniaturaniveis[id] =`<div class="miniatura classn${id}">
-    <div class="miniaturainner infQuizz">
-    <h3>Nivel ${id+1}</h3>
-    <ion-icon onclick="abreniveis(${id})" name="create-outline"></ion-icon>
-    </div>
-
-    </div>
-    `
-    element3.innerHTML+=miniaturaniveis[id]
-
- }
-
- let butãoEnviaNiveis = `<div onclick="tratarNiveis()" class="buttonInf">
-
- <p>Finalizar Quizz</p>
-
-</div`
-element3.innerHTML+=butãoEnviaNiveis
-
-
-}
-
-function abreniveis(ver){
-    element6= document.querySelector(`.classn${ver}`)
-        
-
-    element6.innerHTML=renderizaCriarniveisT[ver]
-
-    console.log(element6)
+   
 }
 
 
@@ -517,17 +406,11 @@ element4.classList.remove("escondido")
 Quizzhtml =`<h2>Seu quizz está pronto!</h2>
 <div class="imagiQuizzCriado">
 <img onclick="abrirQuizzCriado()" src="${url}" alt="">
-
 <p id="legendaimagiQuizzCriado" >${titulo}</p>
-
 </div>
-
 <div onclick="abrirQuizzCriado()" class="buttonInf buttonAcessarQuizz">
-
     <p>Acessar Quizz</p>
-
 </div>
-
 <p id="voltaHome" onclick="voltarHome()">Voltar pra home</p>`
 
 element4.innerHTML=Quizzhtml
@@ -709,6 +592,7 @@ function voltarHome() {
     document.querySelector('.finalizar-jogo').innerHTML = ''
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
+    document.querySelector('.sucessoQuizz').classList.add('escondido')
 }
 
 // -------------------- Tela 1 - Tela de Quizzes ------------------------

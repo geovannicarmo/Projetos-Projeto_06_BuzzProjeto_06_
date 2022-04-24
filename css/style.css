@@ -1,11 +1,9 @@
-
 body{
     background-color: #FAFAFA;
     font-family: 'Roboto', sans-serif;
 }
 
 /* .infBasic{
-
 } */
 
 .top{
@@ -142,19 +140,6 @@ input:first-child{
 
 #descricaoNivel{
     height: 177px;
-}
-
-.miniaturainner{
-    display: flex;
-    justify-content: space-between;
-    font-size: 23px;
-    font-weight: bold;
-    align-items: center;
-    
-    height: 74px;
-  
-    
-
 }
     
 /* .pergunta{
