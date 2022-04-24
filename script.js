@@ -18,7 +18,7 @@ function isImage(url){
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
   }
 
-  function isclolor(corFundo){
+  /*function isclolor(corFundo){
       if(corFundo[0]!=="#" || corFundo.length!==7){
           return false;
       }
@@ -33,7 +33,7 @@ function isImage(url){
           return false
       }
 
-  }
+  }*/
 
 function infQuizz(){
     titulo=document.querySelector("#titulo").value
@@ -119,7 +119,7 @@ function comeco() {
     </div>
 
     <input type="text" id="tesxtPergunta" name="firstname" placeholder="    Texto da pergunta">
-    <input type="text" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
+    <input type="color" id="corFundo" name="firstname" placeholder="    Cor de fundo da pergunta
     ">
 
     <h3>Resposta correta</h3>
@@ -207,7 +207,7 @@ function exibirNivel(elemento) {
 
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
-    if(tesxtPergunta.length<20 || !isclolor(corFundo)){
+    if(tesxtPergunta.length<20/* || !isclolor(corFundo)*/){
         return alert("falha")}
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
