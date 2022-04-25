@@ -434,8 +434,7 @@ element4.classList.remove("escondido")
 
 
 Quizzhtml =`<h2>Seu quizz está pronto!</h2>
-<div class="imagiQuizzCriado">
-<img onclick="obterQuizz(${id})" src="${url}" alt="">
+<div class="imagiQuizzCriado" onclick="obterQuizz(${id})" style="${background(url, opacidadeLinearBottom, true)}">
 <p id="legendaimagiQuizzCriado" >${titulo}</p>
 </div>
 <div onclick="obterQuizz(${id})" class="buttonInf buttonAcessarQuizz">
@@ -614,7 +613,11 @@ function reiniciarQuizz() {
     count = 0
     countAcertos = 0
     setTimeout(() => {
-        document.querySelector('.top').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.querySelector('.jogando-quizz').style.position = 'relative';
+        document.querySelector('.jogando-quizz').style.top = '-100px';
+        document.querySelector('.jogando-quizz').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.querySelector('.jogando-quizz').style.position = 'initial';
+        document.querySelector('.jogando-quizz').style.top = '0';
         document.querySelector('.finalizar-jogo').innerHTML = ''
     }, 1000)
 }
@@ -715,12 +718,7 @@ function editarQuizz(id, secretKey) {
     document.querySelector('.home').classList.add('escondido')
     document.querySelector(".infBasic").classList.remove('escondido')
     const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
-    // promise.then(response => {
-    //     document.querySelector('#titulo').value = response.data.title
-    //     document.querySelector('#url').value = response.data.image
-    //     document.querySelector('#nperguntas').value = response.data.questions.length
-    //     document.querySelector('#nniveis').value = response.data.levels.length
-    // })
+
     promise.then(response => {
         quizzSelecionado = { data: response.data, secretKey }
         console.log(quizzSelecionado)
