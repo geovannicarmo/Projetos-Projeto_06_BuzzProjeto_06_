@@ -5,6 +5,7 @@ let url;
 let nperguntas=1;
 let questions=[];
 let answers=[];
+let getLocal;
 
 
 
@@ -72,7 +73,7 @@ function comeco() {
 
     pagina1 = `
 <h2>Comece pelo começo</h2>
-<div class="infQuizz">
+<div class="infQuizz info">
     <input type="text" id="titulo" name="firstname" placeholder="Título do seu quizz">
     <input type="text" id="url" name="firstname" placeholder="URL da imagem do seu quizz
     ">
@@ -97,7 +98,8 @@ function comeco() {
     let element2=document.querySelector(".criaPerguntas")
 
     element2.innerHTML=""
-   
+    element2.innerHTML = "<h2>Crie suas perguntas</h2>"
+    
     for(let i=0; i<nperguntas;i++){
       
        
@@ -106,7 +108,7 @@ function comeco() {
  <div class="infQuizz perguntaI classe${i} ${i === 0 ? 'pergunta-selecionada' : ''}">
     <div>
         <h3>Pergunta ${i+1}</h3>
-        <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
+        <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
     </div>
     <input type="text" id="tesxtPergunta" name="firstname" placeholder="Texto da pergunta">
     <input type="color" id="corFundo" name="firstname" placeholder="Cor de fundo da pergunta
@@ -132,9 +134,9 @@ function comeco() {
     ">
 </div>`
 
-
-element2.innerHTML+=renderizaCriarPerguntas[i]
-    }
+        
+    element2.innerHTML+=renderizaCriarPerguntas[i]
+}
 
     let butãoEnviaperguntas = `<div onclick="tratarPerguntas()" class="buttonInf">
     <p>Prosseguir pra criar níveis</p>
@@ -311,13 +313,16 @@ if(answers.length < 2) {
     let renderizaCriarniveis=[]
 
     element3.innerHTML=""
+    element3.innerHTML = "<h2>Agora, decida os níveis!</h2>"
+
 
     for(let id=0; id<nniveis; id++){
 
-   renderizaCriarniveis[id] =`<div class="infQuizz niveisI classeN${id} ${id === 0 ? 'nivel-selecionado': ''}">
+   renderizaCriarniveis[id] =`
+   <div class="infQuizz niveisI classeN${id} ${id === 0 ? 'nivel-selecionado': ''}">
    <div>
         <h3>Nível ${id+1}</h3>
-        <img src="./edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
+        <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
    <input type="text" id="TituloNivel" name="firstname" placeholder="Título do nível">
    <input type="text" id="acertoMinimo" name="firstname" placeholder="% de acerto mínima
@@ -427,30 +432,29 @@ function abrirQuizzCriado(){
     console.log("vai")
 }
 
-let ids=[];
+let local=[];
 
 function respostaAPI(resposta){
-    console.log(resposta.data.id)
+    console.log(resposta.data)
   
 
-    if(localStorage.getItem('localIds') === null ||localStorage.getItem('localIds')==="undefined") {
-        localStorage.setItem('localIds', JSON.stringify(ids))
+    if(localStorage.getItem('localIdsSecretKeys') === null ||localStorage.getItem('localIdsSecretKeys')==="undefined") {
+        localStorage.setItem('localIdsSecretKeys', JSON.stringify(local))
         console.log("entrei")
-        console.log(localStorage.setItem('localIds', JSON.stringify(ids)))
+        console.log(localStorage.setItem('localIdsSecretKeys', JSON.stringify(local)))
     }
-console.log(JSON.parse(localStorage.getItem('localIds')))
-    let getIds = JSON.parse(localStorage.getItem('localIds'))
+console.log(JSON.parse(localStorage.getItem('localIdsSecretKeys')))
+    getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
 
-    getIds.push(resposta.data.id)
-    localStorage.setItem('localIds', JSON.stringify(getIds))
+    getLocal.push({ id: resposta.data.id, SecretKey: resposta.data.key })
+    localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
     QuizzPronto(resposta.data.id)
 }
 
 
 
 comeco()
-console.log(localStorage.getItem('localIds'))
-console.log(undefined)
+console.log(localStorage.getItem('localIdsSecretKeys'))
 
 
 
@@ -634,25 +638,54 @@ function carregarTodosQuizzes() {
 
 function carregarQuizzesUsuario() {
     document.querySelector('.com-quizzes .seus-quizzes').innerHTML = ''
-    let getIds = JSON.parse(localStorage.getItem('localIds'))
+    getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
+    console.log(getLocal)
     
-    if(localStorage.getItem('localIds') !== null) {
+    if(localStorage.getItem('localIdsSecretKeys') !== null) {
         document.querySelector('.sem-quizzes').classList.add('escondido')
         document.querySelector('.com-quizzes').classList.remove('escondido')
-    }
-    
-    for(let i = 0; i < getIds.length; i++) {
-        let promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${getIds[i]}`)
-        promise.then(response => {
-            document.querySelector('.com-quizzes .seus-quizzes').innerHTML += `
-            <div class="card-quizz" style="${background(response.data.image, opacidadeLinearBottom, true)}"
-            onclick="obterQuizz(${response.data.id})">
-            <h3>${response.data.title}</h3>
-            </div>
-            `
-        })
+
+        for(let i = 0; i < getLocal.length; i++) {
+            let promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${getLocal[i].id}`)
+            promise.then(response => {
+                document.querySelector('.com-quizzes .seus-quizzes').innerHTML += `
+                    <div>
+                        <div class="card-quizz" style="${background(response.data.image, opacidadeLinearBottom, true)}"
+                            onclick="obterQuizz(${response.data.id})">
+                            <h3>${response.data.title}</h3>
+                        </div>
+                        <div class="gerenciar-quizz">   
+                            <ion-icon name="create-outline" onclick="editarQuizz('${getLocal[i].id}', '${getLocal[i].SecretKey}')"></ion-icon>
+                            <ion-icon name="trash-outline" onclick="removerQuizz('${getLocal[i].id}', '${getLocal[i].SecretKey}')"></ion-icon>
+                        </div>
+                    </div>
+                `
+            })
+        }
+    }   
+}
+function removerQuizz(id, secretKey) {
+    if(confirm("Deseja deletar esse Quizz?") === true) {
+        getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
+        for(let i = 0; i < getLocal.length; i++) {
+            if(`${getLocal[i].id}` === id) {
+                console.log('IGUAIS!')
+                getLocal.splice(i, 1)
+            }
+        }
+        console.log(getLocal.length === 0)
+
+        if(getLocal.length === 0) {
+            localStorage.removeItem('localIdsSecretKeys')
+        } else {
+            localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
+        }
+
+        axios.delete(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`, { headers: { "Secret-Key": secretKey } })
+        voltarHome()
     }
 }
+
 
 carregarTodosQuizzes()
 carregarQuizzesUsuario()
