@@ -5,7 +5,9 @@ let url;
 let nperguntas=1;
 let questions=[];
 let answers=[];
+let levels=[];
 let getLocal;
+let quizzSelecionado = {}
 
 
 
@@ -69,6 +71,7 @@ function infQuizz(){
 
 function comeco() {
     element = document.querySelector(".infBasic")
+    // titulo = response.data.title
 
 
     pagina1 = `
@@ -86,8 +89,15 @@ function comeco() {
     <p>Prosseguir pra criar perguntas</p>
 </div>`
 
-    element.innerHTML = pagina1
 
+    element.innerHTML = pagina1
+    
+    if(Object.keys(quizzSelecionado).length > 0) {
+        document.querySelector('#titulo').value = quizzSelecionado.data.title
+        document.querySelector('#url').value = quizzSelecionado.data.image
+        document.querySelector('#nperguntas').value = quizzSelecionado.data.questions.length
+        document.querySelector('#nniveis').value = quizzSelecionado.data.levels.length
+    }
 }
 
 
@@ -99,6 +109,9 @@ function comeco() {
 
     element2.innerHTML=""
     element2.innerHTML = "<h2>Crie suas perguntas</h2>"
+
+    const temKeys = Object.keys(quizzSelecionado).length > 0
+    const isMaior = (i, qtd) => quizzSelecionado.data.questions[i].answers.length > qtd
     
     for(let i=0; i<nperguntas;i++){
       
@@ -110,27 +123,27 @@ function comeco() {
         <h3>Pergunta ${i+1}</h3>
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
     </div>
-    <input type="text" id="tesxtPergunta" name="firstname" placeholder="Texto da pergunta">
+    <input type="text" id="tesxtPergunta" value="${temKeys ? quizzSelecionado.data.questions[i].title : ''}" name="firstname" placeholder="Texto da pergunta">
     <input type="color" id="corFundo" name="firstname" placeholder="Cor de fundo da pergunta
     ">
     <h3>Resposta correta</h3>
-    <input type="text" id="RespCprreta" name="firstname" placeholder="Resposta correta
+    <input type="text" id="RespCprreta" value="${temKeys ? quizzSelecionado.data.questions[i].answers[0].text : ''}" name="firstname" placeholder="Resposta correta
     ">
-    <input type="text" id="urlImg" name="firstname" placeholder="URL da imagem
+    <input type="text" id="urlImg" value="${temKeys ? quizzSelecionado.data.questions[i].answers[0].image : ''}" name="firstname" placeholder="URL da imagem
     ">
     <h3>Respostas incorretas
     </h3>
-    <input type="text" id="incorreta1" name="firstname" placeholder="Resposta incorreta 1
+    <input type="text" id="incorreta1" value="${temKeys ? quizzSelecionado.data.questions[i].answers[1].text : ''}" name="firstname" placeholder="Resposta incorreta 1
     ">
-    <input type="text" class="space" id="urlincorreta1" name="firstname" placeholder="URL da imagem 1
+    <input type="text" class="space" value="${temKeys ? quizzSelecionado.data.questions[i].answers[1].image : ''}" id="urlincorreta1" name="firstname" placeholder="URL da imagem 1
     ">
-    <input type="text" id="incorreta2" name="firstname" placeholder="Resposta incorreta 2
+    <input type="text" id="incorreta2" value="${temKeys ? isMaior(i, 2) ? quizzSelecionado.data.questions[i].answers[2].text : '' : ''}" name="firstname" placeholder="Resposta incorreta 2
     ">
-    <input type="text" class="space" id="urlincorreta2" name="firstname" placeholder="URL da imagem 2
+    <input type="text" class="space" value="${temKeys ? isMaior(i, 2) ? quizzSelecionado.data.questions[i].answers[2].image : '' : ''}" id="urlincorreta2" name="firstname" placeholder="URL da imagem 2
     ">
-    <input type="text" id="incorreta3" name="firstname" placeholder="Resposta incorreta 3
+    <input type="text" id="incorreta3" value="${temKeys ? isMaior(i, 3) ? quizzSelecionado.data.questions[i].answers[3].text : '' : ''}" name="firstname" placeholder="Resposta incorreta 3
     ">
-    <input type="text" id="urlincorreta3" name="firstname" placeholder="URL da imagem 3
+    <input type="text" id="urlincorreta3" value="${temKeys ? isMaior(i, 3) ? quizzSelecionado.data.questions[i].answers[3].image : '' : ''}" name="firstname" placeholder="URL da imagem 3
     ">
 </div>`
 
@@ -184,35 +197,32 @@ function exibirNivel(elemento) {
     answers = []
 
     classecriaPerguntas =document.querySelector(".criaPerguntas")
-
     tesxtPergunta= classecriaPerguntas.querySelector(`.classe${idx} #tesxtPergunta`).value
-    
-
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
     if(tesxtPergunta.length<20/* || !isclolor(corFundo)*/){
-        return alert("falha")}
-
+        return alert("falha")
+    }
+       
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
-
     urlImg= classecriaPerguntas.querySelector(`.classe${idx} #urlImg`).value
 
-if (RespCprreta!=="" && urlImg!==""){
+    if (RespCprreta!=="" && urlImg!==""){
 
-    if(!isImage(urlImg) || RespCprreta==="" || urlImg === ""){
-      
-        return alert("falha1")
+        if(!isImage(urlImg) || RespCprreta==="" || urlImg === ""){
+        
+            return alert("falha1")
+        }
+
+        answers.push({ 
+            text: RespCprreta,
+            image: urlImg,
+            isCorrectAnswer: true
+        })
+
+    } else {
+        return alert('falha1 dois campos')
     }
-
-    answers.push({ 
-        text: RespCprreta,
-        image: urlImg,
-        isCorrectAnswer: true
-    })
-
-} else {
-    return alert('falha1 dois campos')
-}
 
     incorreta1= classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`).value
 
@@ -315,6 +325,8 @@ if(answers.length < 2) {
     element3.innerHTML=""
     element3.innerHTML = "<h2>Agora, decida os níveis!</h2>"
 
+    const temKeys = Object.keys(quizzSelecionado).length > 0
+
 
     for(let id=0; id<nniveis; id++){
 
@@ -324,13 +336,13 @@ if(answers.length < 2) {
         <h3>Nível ${id+1}</h3>
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
-   <input type="text" id="TituloNivel" name="firstname" placeholder="Título do nível">
-   <input type="text" id="acertoMinimo" name="firstname" placeholder="% de acerto mínima
+   <input type="text" id="TituloNivel" value="${temKeys ? quizzSelecionado.data.levels[id].title : ''}" name="firstname" placeholder="Título do nível">
+   <input type="text" id="acertoMinimo" value="${temKeys ? quizzSelecionado.data.levels[id].minValue : ''}" name="firstname" placeholder="% de acerto mínima
    ">
-   <input type="text" id="imagemdonivel" name="firstname" placeholder="URL da imagem do nível
+   <input type="text" id="imagemdonivel" value="${temKeys ? quizzSelecionado.data.levels[id].image : ''}" name="firstname" placeholder="URL da imagem do nível
    ">
    <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
-   "></textarea>
+   ">${temKeys ? quizzSelecionado.data.levels[id].text : ''}</textarea>
 </div>`
 element3.innerHTML+=renderizaCriarniveis[id]
 
@@ -396,10 +408,18 @@ function tratarNiveis(){
 
     }
     
+    const temKey = Object.keys(quizzSelecionado).length > 0
 
-    const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', enviaQuizz);
+    if(temKey) {
+        const requisicao = axios.put(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${quizzSelecionado.data.id}`, enviaQuizz, {
+            headers: { "Secret-Key": quizzSelecionado.secretKey }
+        });
+        requisicao.then(respostaAPI);
+    } else {
+        const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/', enviaQuizz);
+        requisicao.then(respostaAPI);
+    }
 
-    requisicao.then(respostaAPI);
 }
 
 
@@ -445,15 +465,17 @@ function respostaAPI(resposta){
     }
 console.log(JSON.parse(localStorage.getItem('localIdsSecretKeys')))
     getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
-
-    getLocal.push({ id: resposta.data.id, SecretKey: resposta.data.key })
-    localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
-    QuizzPronto(resposta.data.id)
+    if(Object.keys(quizzSelecionado).length > 0) {
+        localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
+        QuizzPronto(resposta.data.id)
+    } else {
+        getLocal.push({ id: resposta.data.id, SecretKey: resposta.data.key })
+        localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
+        QuizzPronto(resposta.data.id)
+    }
 }
 
 
-
-comeco()
 console.log(localStorage.getItem('localIdsSecretKeys'))
 
 
@@ -462,7 +484,7 @@ console.log(localStorage.getItem('localIdsSecretKeys'))
 
 // -------------------- Tela 2 - Jogando Quizz ------------------------
 let questoesSortidas = []
-let levels = []
+let levelsJogando = []
 let idAtual;
 const opacidadeLinear = 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),'
 const opacidadeLinearBottom = 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),'
@@ -486,7 +508,7 @@ function obterQuizz(id) {
     const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
 
     promise.then(response => {
-        levels = response.data.levels
+        levelsJogando = response.data.levels
         document.querySelector('.container-jogando').innerHTML = `
             <div class="quizz-principal" style="${background(response.data.image, opacidadeLinear)}">
                 <h1>${response.data.title}</h1>
@@ -544,24 +566,24 @@ function selecionarResposta(resposta, perguntaId) {
         setTimeout(() => {
             document.querySelectorAll('.container-perguntas')[count].nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
             count += 1;
-        }, 2000)
+        }, 1500)
     } else {
         setTimeout(() => {
             finalizarQuizz()
             document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }, 2000)
+        }, 1500)
     }
     document.querySelectorAll(`.card-resposta.${perguntaId}`).forEach(card => card.removeAttribute('onclick'));
 }
 
 function finalizarQuizz() {
     let countLevels = 0
-    levels.sort((a, b) => a.minValue - b.minValue)
+    levelsJogando.sort((a, b) => a.minValue - b.minValue)
     countAcertos = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;
     countAcertos = Math.round(countAcertos)
 
-    for(let i = 0; i < levels.length; i++) {
-        if(countAcertos >= levels[i].minValue) {
+    for(let i = 0; i < levelsJogando.length; i++) {
+        if(countAcertos >= levelsJogando[i].minValue) {
             countLevels++
         }
     }
@@ -570,12 +592,12 @@ function finalizarQuizz() {
         <div class="final-quizz">
             <div class="container-final">
                 <div class="titulo-resultado">
-                    <h3>${countAcertos}% de acerto: ${levels[countLevels - 1].title}</h3>
+                    <h3>${countAcertos}% de acerto: ${levelsJogando[countLevels - 1].title}</h3>
                 </div>
                 <div class="container-resultado">   
-                    <img src="${levels[countLevels - 1].image}" alt="">
+                    <img src="${levelsJogando[countLevels - 1].image}" alt="">
                     <div class="texto-resultado">
-                        <p>${levels[countLevels - 1].text}</p>
+                        <p>${levelsJogando[countLevels - 1].text}</p>
                     </div>
                 </div>
             </div>
@@ -600,6 +622,7 @@ function reiniciarQuizz() {
 function voltarHome() {
     count = 0
     countAcertos = 0
+    quizzSelecionado = {}
     document.querySelector('.finalizar-jogo').innerHTML = ''
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
@@ -617,6 +640,7 @@ function voltarHome() {
 function criarQuizz() {
     document.querySelector('.home').classList.add('escondido')
     document.querySelector('.infBasic').classList.remove('escondido')
+    comeco()
 }
 
 function carregarTodosQuizzes() {
@@ -664,6 +688,7 @@ function carregarQuizzesUsuario() {
         }
     }   
 }
+
 function removerQuizz(id, secretKey) {
     if(confirm("Deseja deletar esse Quizz?") === true) {
         getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
@@ -684,6 +709,23 @@ function removerQuizz(id, secretKey) {
         axios.delete(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`, { headers: { "Secret-Key": secretKey } })
         voltarHome()
     }
+}
+
+function editarQuizz(id, secretKey) {
+    document.querySelector('.home').classList.add('escondido')
+    document.querySelector(".infBasic").classList.remove('escondido')
+    const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
+    // promise.then(response => {
+    //     document.querySelector('#titulo').value = response.data.title
+    //     document.querySelector('#url').value = response.data.image
+    //     document.querySelector('#nperguntas').value = response.data.questions.length
+    //     document.querySelector('#nniveis').value = response.data.levels.length
+    // })
+    promise.then(response => {
+        quizzSelecionado = { data: response.data, secretKey }
+        console.log(quizzSelecionado)
+        comeco()
+    })
 }
 
 
