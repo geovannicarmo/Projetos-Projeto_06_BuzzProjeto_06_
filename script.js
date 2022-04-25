@@ -47,15 +47,54 @@ function infQuizz(){
     
     console.log(nperguntas)
 
+    inputInvalido=document.querySelector(".inputInvalido")
+    inputInvalido.classList.add("escondido")
+    tituloRed=document.querySelector("#titulo")
+    tituloRed.classList.remove("red")
 
-    if(titulo.length<20 || titulo.length>65 || nperguntas<3 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url)){
+    urlInvalido=document.querySelector(".urlInvalido")
+    urlInvalido.classList.add("escondido")
+    urlRed=document.querySelector("#url")
+    urlRed.classList.remove("red")
+
+    nperguntasInvalido=document.querySelector(".nperguntasInvalido")
+    nperguntasInvalido.classList.add("escondido")
+    nperguntasred=document.querySelector("#nperguntas")
+    nperguntasred.classList.remove("red")
+
+    nniveisInvalido=document.querySelector(".nniveisInvalido")
+    nniveisInvalido.classList.add("escondido")
+    nniveisred=document.querySelector("#nniveis")
+    nniveisred.classList.remove("red")
+
+    if(titulo.length<20 || titulo.length>65){
+        inputInvalido.classList.remove("escondido")
+        tituloRed.classList.add("red")
        
-        
-
-
-        alert("Preencha os dados corretamente.")
     }
-    else {
+
+    if(!isImage(url)){
+
+        urlInvalido.classList.remove("escondido")
+        urlRed.classList.add("red")
+    }
+
+    if(nperguntas<3 || isNaN(nperguntas)){
+
+        nperguntasInvalido.classList.remove("escondido")
+        nperguntasred.classList.add("red")
+    }
+
+    if(nniveis<2 || isNaN(nniveis)){
+        nniveisInvalido.classList.remove("escondido")
+        nniveisred.classList.add("red")
+    }
+
+
+
+
+    if(!(titulo.length<20 || titulo.length>65 || nperguntas<3 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url))){
+    
 
         let infBasic = document.querySelector(".infBasic")
         infBasic.classList.add("escondido")
@@ -75,12 +114,20 @@ function comeco() {
 <h2>Comece pelo começo</h2>
 <div class="infQuizz info">
     <input type="text" id="titulo" name="firstname" placeholder="Título do seu quizz">
+    <div class="inputInvalido escondido textoInputErro"> O título deve ter entre 20 e 65 caracteres</div>
+
     <input type="text" id="url" name="firstname" placeholder="URL da imagem do seu quizz
     ">
+    <div class="urlInvalido escondido textoInputErro"> O valor informado não é uma URL válida</div>
+
     <input type="text" id="nperguntas" name="firstname" placeholder="Quantidade de perguntas do quizz
     ">
+   
+
     <input type="text" id="nniveis" name="firstname" placeholder="Quantidade de níveis do quizz
     ">
+    <div class="nniveisInvalido escondido textoInputErro"> O valor informado não é uma URL válida</div>
+
 </div>
 <div onclick="infQuizz()" class="buttonInf">
     <p>Prosseguir pra criar perguntas</p>
@@ -190,7 +237,7 @@ function exibirNivel(elemento) {
 
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
-    if(tesxtPergunta.length<20/* || !isclolor(corFundo)*/){
+    if(tesxtPergunta.length<20){
         return alert("falha")}
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
@@ -325,8 +372,13 @@ if(answers.length < 2) {
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
    <input type="text" id="TituloNivel" name="firstname" placeholder="Título do nível">
+   <div class="TNivelInvalido${id} textoInputErro escondido"> O titilodonuveltem que ter 20cac </div>
+   
+
    <input type="text" id="acertoMinimo" name="firstname" placeholder="% de acerto mínima
    ">
+
+   <div class="TNivelInvalido${id} textoInputErro escondido"> O titilodonuveltem que ter 20cac </div>
    <input type="text" id="imagemdonivel" name="firstname" placeholder="URL da imagem do nível
    ">
    <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
@@ -354,11 +406,21 @@ function tratarNiveis(){
         for(let i=0; i<nniveis; i++){
 
     TituloNivel= document.querySelector(`.classeN${i} #TituloNivel`).value
+    TituloNivelInput= document.querySelector(`.classeN${i} #TituloNivel`)
+    TituloNivelInput.classList.remove("red")
+
+    let TNivelInvalidoid= document.querySelector(`.TNivelInvalido${i}`)
+    TNivelInvalidoid.classList.add("escondido")
 
     acertoMinimo= document.querySelector(`.classeN${i} #acertoMinimo`).value
 
     imagemdonivel= document.querySelector(`.classeN${i} #imagemdonivel`).value
     descricaoNivel= document.querySelector(`.classeN${i} #descricaoNivel`).value
+
+    if(TituloNivel.length<10){
+        TituloNivelInput.classList.add("red")
+        TNivelInvalidoid.classList.remove("escondido")
+    }
 
     if(TituloNivel.length<10||acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""|| descricaoNivel.length<30||!isImage(imagemdonivel)){
         return alert("Preencha os dados corretamente.")
