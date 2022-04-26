@@ -8,7 +8,7 @@ let answers=[];
 let levels=[];
 let getLocal;
 let quizzSelecionado = {}
-
+let Loading=document.querySelector(".carregando")
 
 
 
@@ -23,19 +23,7 @@ function isImage(url){
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
   }
 
-  /*function isclolor(corFundo){
-      if(corFundo[0]!=="#" || corFundo.length!==7){
-          return false;
-      }
-      let inputString = corFundo.replace(/^./, ""); 
-      let re = /[0-9A-Fa-f]{6}/g;
-      
-      if(re.test(inputString)) {
-         return true
-      } else {
-          return false
-      }
-  }*/
+
 
 function infQuizz(){
     titulo=document.querySelector("#titulo").value
@@ -125,12 +113,12 @@ function comeco() {
 
     <input type="text" id="nperguntas" name="firstname" placeholder="Quantidade de perguntas do quizz
     ">
-    <div class="nperguntasInvalido escondido textoInputErro"> O valor informado não é uma URL válida</div>
+    <div class="nperguntasInvalido escondido textoInputErro"> É necessário criar ao menos 3 perguntas.</div>
    
 
     <input type="text" id="nniveis" name="firstname" placeholder="Quantidade de níveis do quizz
     ">
-    <div class="nniveisInvalido escondido textoInputErro"> O valor informado não é uma URL válida</div>
+    <div class="nniveisInvalido escondido textoInputErro"> É necessário criar ao menos 2 níveis.</div>
 
 </div>
 <div onclick="infQuizz()" class="buttonInf">
@@ -476,7 +464,7 @@ return console.log("falha no preenchimento")
 }
 
 if(answers.length < 2) {
-    return alert('preencha pelo menos 2 campos')
+    return alert('Preencha pelo menos 2 respostas')
 } 
     
     questions.push(objetopergunta)
@@ -527,7 +515,7 @@ if(preenchimentoincorreto>0){
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
    <input type="text" id="TituloNivel" value="${temKeys ? quizzSelecionado.data.levels[id].title : ''}" name="firstname" placeholder="Título do nível"/>
-   <div class="escondido TNivelInvalido${id} textoInputErro"> É necessário que o título do nivel tenha ao menos 20 caracteres. </div>
+   <div class="escondido TNivelInvalido${id} textoInputErro"> É necessário que o título do nivel tenha ao menos 10 caracteres. </div>
 
    <input type="text" id="acertoMinimo" value="${temKeys ? quizzSelecionado.data.levels[id].minValue : ''}" name="firstname" placeholder="% de acerto mínima
    ">
@@ -542,7 +530,7 @@ if(preenchimentoincorreto>0){
    <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
    ">
   
-   ${temKeys ? quizzSelecionado.data.levels[id].text : ''}</textarea>
+   ${temKeys ? quizzSelecionado.data.levels[id].text: '' }</textarea>
 
    <div class="escondido DnivelInvalido${id} textoInputErro"> A descrição do nível deve ao menos 30 caracteres </div>
 
@@ -660,11 +648,23 @@ function tratarNiveis(){
     const temKey = Object.keys(quizzSelecionado).length > 0
 
     if(temKey) {
+
+        let element3=document.querySelector(".criaNiveis")
+        element3.classList.add("escondido")
+
+        
+        Loading.classList.remove("escondido")
+
+
         const requisicao = axios.put(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${quizzSelecionado.data.id}`, enviaQuizz, {
             headers: { "Secret-Key": quizzSelecionado.secretKey }
         });
+
         requisicao.then(respostaAPI);
     } else {
+        let element3=document.querySelector(".criaNiveis")
+        element3.classList.add("escondido")
+        Loading.classList.remove("escondido")
         const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/', enviaQuizz);
         requisicao.then(respostaAPI);
     }
@@ -678,6 +678,8 @@ function QuizzPronto(id){
 
     let element3=document.querySelector(".criaNiveis")
     element3.classList.add("escondido")
+
+    Loading.classList.add("escondido")
 
 let element4=document.querySelector(".sucessoQuizz")
 element4.classList.remove("escondido")
@@ -759,9 +761,11 @@ function obterQuizz(id) {
     document.querySelector(".sucessoQuizz").classList.add('escondido')
     document.querySelector('.home').classList.add('escondido')
     document.querySelector('.jogando-quizz').classList.remove('escondido')
+    Loading.classList.remove("escondido")
     const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
 
     promise.then(response => {
+        Loading.classList.add("escondido")
         levelsJogando = response.data.levels
         document.querySelector('.container-jogando').innerHTML = `
             <div class="quizz-principal" style="${background(response.data.image, opacidadeLinear)}">
@@ -896,6 +900,7 @@ function voltarHome() {
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
     document.querySelector('.sucessoQuizz').classList.add('escondido')
+    
     carregarTodosQuizzes()
     carregarQuizzesUsuario()
 }
@@ -909,11 +914,14 @@ function criarQuizz() {
 }
 
 function carregarTodosQuizzes() {
+    
+    Loading.classList.remove("escondido")
     document.querySelector('.todos-quizzes > div').innerHTML = ''
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes')
 
     promise.then(response => {
         console.log(response.data)
+        Loading.classList.add("escondido")
         for(let i = 0; i < response.data.length; i++) {
             document.querySelector('.todos-quizzes > div').innerHTML += `
                 <div class="card-quizz" style="${background(response.data[i].image, opacidadeLinearBottom, true)}"
@@ -988,6 +996,8 @@ function editarQuizz(id, secretKey) {
         comeco()
     })
 }
+
+
 
 carregarTodosQuizzes()
 carregarQuizzesUsuario()
