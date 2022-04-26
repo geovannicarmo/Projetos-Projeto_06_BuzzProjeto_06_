@@ -11,18 +11,15 @@ let quizzSelecionado = {}
 let Loading=document.querySelector(".carregando")
 
 
-
 function falha(){
     alert("Preencha os dados corretamente")
 }
-
 
 
 function isImage(url){
 
     return /^https?:\/\/.+\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url)
   }
-
 
 
 function infQuizz(){
@@ -34,8 +31,6 @@ function infQuizz(){
    
     
     nniveis=document.querySelector("#nniveis").value
-    
-    console.log(nperguntas)
 
     inputInvalido=document.querySelector(".inputInvalido")
     inputInvalido.classList.add("escondido")
@@ -81,8 +76,6 @@ function infQuizz(){
     }
 
 
-
-
     if(!(titulo.length<20 || titulo.length>65 || nperguntas<3 || isNaN(nperguntas) ||nniveis<2 || isNaN(nniveis) || !isImage(url))){
     
 
@@ -98,8 +91,6 @@ function infQuizz(){
 
 function comeco() {
     element = document.querySelector(".infBasic")
-    // titulo = response.data.title
-
 
     pagina1 = `
 <h2>Comece pelo começo</h2>
@@ -136,8 +127,6 @@ function comeco() {
     }
 }
 
-
-
   function criarPerguntas(){ 
     renderizaCriarPerguntas = []
 
@@ -150,8 +139,7 @@ function comeco() {
     const isMaior = (i, qtd) => quizzSelecionado.data.questions[i].answers.length > qtd
     
     for(let i=0; i<nperguntas;i++){
-      
-       
+          
    
    renderizaCriarPerguntas[i] =`
  <div class="infQuizz perguntaI classe${i} ${i === 0 ? 'pergunta-selecionada' : ''}">
@@ -212,9 +200,6 @@ function comeco() {
 </div`
 element2.innerHTML+=butãoEnviaperguntas
 
-
-
-
   }
 
 function exibirPergunta(elemento) {
@@ -247,10 +232,6 @@ function exibirNivel(elemento) {
     }, 500)
 }
 
-
- 
-  
- 
   
   function tratarPerguntas(){
     questions = []
@@ -319,16 +300,13 @@ function exibirNivel(elemento) {
         })
 
 
-
-
-
     incorreta1= classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`).value
 
     Respfalse1input=classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`)
     Respfalse1input.classList.remove("red")
 
     let tesxtfalseInvalido1= classecriaPerguntas.querySelector(`.tesxtfalseInvalido1${idx}`)
-    console.log(tesxtfalseInvalido1)
+
     tesxtfalseInvalido1.classList.add("escondido")
 
     urlincorreta1= classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta1`).value
@@ -447,20 +425,13 @@ function exibirNivel(elemento) {
         })
 
     }
-
-
-
-   
+  
 
 let objetopergunta ={
     title: tesxtPergunta,
     color: corFundo,
     answers
 
-}
-
-if(preenchimentoincorreto>0){
-return console.log("falha no preenchimento")
 }
 
 if(answers.length < 2) {
@@ -472,9 +443,6 @@ if(answers.length < 2) {
 
 }
 
-if(preenchimentoincorreto>0){
-    return console.log("falha no preenchimento")
-    }
     
     if(answers.length < 2) {
         return alert('preencha pelo menos 2 campos')
@@ -482,10 +450,6 @@ if(preenchimentoincorreto>0){
     
    
     return criarNiveis()
-
-  
-
-    
 
   }
 
@@ -528,8 +492,7 @@ if(preenchimentoincorreto>0){
   
 
    <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
-   ">
-   ${temKeys ? quizzSelecionado.data.levels[id].text: '' }</textarea>
+   ">${temKeys ? quizzSelecionado.data.levels[id].text: '' }</textarea>
 
    <div class="escondido DnivelInvalido${id} textoInputErro"> A descrição do nível deve ao menos 30 caracteres </div>
 
@@ -546,7 +509,6 @@ element3.innerHTML+=butãoEnviaperguntas
 
    
 }
-
 
 
 function tratarNiveis(){
@@ -567,7 +529,7 @@ function tratarNiveis(){
     acertoMinimoInput.classList.remove("red")
 
     AMnivelInvalidoid=document.querySelector(`.AMnivelInvalido${i}`)
-    console.log(AMnivelInvalidoid)
+
     AMnivelInvalidoid.classList.add("escondido")
 
     imagemdonivel= document.querySelector(`.classeN${i} #imagemdonivel`).value
@@ -582,7 +544,7 @@ function tratarNiveis(){
     descricaoNivelInput.classList.remove("red")
 
     DnivelInvalido=document.querySelector(`.DnivelInvalido${i}`)
-    console.log(DnivelInvalido)
+   
     DnivelInvalido.classList.add("escondido")
 
     if(TituloNivel.length<10){
@@ -598,18 +560,13 @@ function tratarNiveis(){
     if(!isImage(imagemdonivel)){
     IMGnivelInvalido.classList.remove("escondido")
     imagemdonivelInput.classList.add("red")
-    console.log("gggg")
     }
 
-    if(descricaoNivel.length<30){
-        console.log("gggg")
+    if(descricaoNivel.length<30){  
         descricaoNivelInput.classList.add("red")
         DnivelInvalido.classList.remove("escondido")
     }
-
-  
-
-    
+   
     if (acertoMinimo==0){
        
         cont++
@@ -633,9 +590,6 @@ function tratarNiveis(){
 
         if(!(TituloNivel.length<10||acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""|| descricaoNivel.length<30||!isImage(imagemdonivel))){
         
-        
-        
-
     enviaQuizz ={
         title: titulo,
         image: url,
@@ -671,8 +625,6 @@ function tratarNiveis(){
 
 }
 
-
-
 function QuizzPronto(id){
 
     let element3=document.querySelector(".criaNiveis")
@@ -702,23 +654,12 @@ element4.innerHTML=Quizzhtml
 
 }
 
-
-function abrirQuizzCriado(){
-    console.log("vai")
-}
-
 let local=[];
 
 function respostaAPI(resposta){
-    console.log(resposta.data)
-  
-
     if(localStorage.getItem('localIdsSecretKeys') === null ||localStorage.getItem('localIdsSecretKeys')==="undefined") {
         localStorage.setItem('localIdsSecretKeys', JSON.stringify(local))
-        console.log("entrei")
-        console.log(localStorage.setItem('localIdsSecretKeys', JSON.stringify(local)))
     }
-console.log(JSON.parse(localStorage.getItem('localIdsSecretKeys')))
     getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
     if(Object.keys(quizzSelecionado).length > 0) {
         localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
@@ -729,6 +670,3 @@ console.log(JSON.parse(localStorage.getItem('localIdsSecretKeys')))
         QuizzPronto(resposta.data.id)
     }
 }
-
-
-console.log(localStorage.getItem('localIdsSecretKeys'))

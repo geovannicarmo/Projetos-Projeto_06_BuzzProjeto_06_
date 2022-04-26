@@ -1,6 +1,3 @@
-
-
-
 /* --------------------------- Tela 1 - Tela de Quizzes --------------------------------- */
 .home {
     display: flex;
@@ -193,4 +190,3 @@
 .escondido {
     display: none;
 }
-

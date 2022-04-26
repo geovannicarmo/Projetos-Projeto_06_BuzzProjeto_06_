@@ -1,11 +1,12 @@
-
 /*  --------------Responsivo---------------  */
-
-	
-
 
 @media (max-width: 1100px) {
     /* Tela 1 */
+    #carregandoGif {
+        width: 300px;
+        height: 300px;
+    }
+
     .quizzes, .todos-quizzes {
         width: 90%;
     }
@@ -122,11 +123,6 @@
         margin-bottom: 29px;
      }
 
-     /* .imagiQuizzCriado img{
-    
-        width: 91%;
-      } */
-
     .imagiQuizzCriado {
         width: 90%;
     }
@@ -135,5 +131,10 @@
 @media (max-width: 375px) {
     .card-quizz {
         background-size: 150%;
+    }
+
+    #carregandoGif {
+        width: 230px;
+        height: 230px;
     }
 }

@@ -11,7 +11,6 @@ function carregarTodosQuizzes() {
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes')
 
     promise.then(response => {
-        console.log(response.data)
         Loading.classList.add("escondido")
         for(let i = 0; i < response.data.length; i++) {
             document.querySelector('.todos-quizzes > div').innerHTML += `
@@ -27,7 +26,6 @@ function carregarTodosQuizzes() {
 function carregarQuizzesUsuario() {
     document.querySelector('.com-quizzes .seus-quizzes').innerHTML = ''
     getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
-    console.log(getLocal)
     
     if(localStorage.getItem('localIdsSecretKeys') !== null) {
         document.querySelector('.sem-quizzes').classList.add('escondido')
@@ -58,7 +56,6 @@ function removerQuizz(id, secretKey) {
         getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
         for(let i = 0; i < getLocal.length; i++) {
             if(`${getLocal[i].id}` === id) {
-                console.log('IGUAIS!')
                 getLocal.splice(i, 1)
             }
         }
@@ -83,12 +80,9 @@ function editarQuizz(id, secretKey) {
 
     promise.then(response => {
         quizzSelecionado = { data: response.data, secretKey }
-        console.log(quizzSelecionado)
         comeco()
     })
 }
-
-
 
 carregarTodosQuizzes()
 carregarQuizzesUsuario()

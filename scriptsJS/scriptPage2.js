@@ -104,7 +104,6 @@ function selecionarResposta(resposta, perguntaId) {
 }
 
 function finalizarQuizz() {
-    console.log(countAcertos)
     let countLevels = 0
     levelsJogando.sort((a, b) => a.minValue - b.minValue)
     let countFinal = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;

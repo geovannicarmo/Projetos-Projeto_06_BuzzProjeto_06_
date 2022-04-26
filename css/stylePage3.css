@@ -20,9 +20,13 @@ body{
     z-index: 2;
 }
 
+.top h1 {
+    cursor: pointer;
+}
+
 #carregandoGif{
-    width: 20%;
-    height: 30%;
+    width: 400px;
+    height: 400px;
     margin: 0 auto;
 }
 
@@ -184,12 +188,6 @@ input:first-child{
     box-sizing: border-box;
     color: #BABABA;
 }
-/* 
-.imagiQuizzCriado img{
-    border-radius: 5px;
-    width: 500px;
-    height: 266px;
-} */
 
 .load{
     margin-top: 25%;
