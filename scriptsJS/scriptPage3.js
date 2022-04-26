@@ -257,7 +257,10 @@ function exibirNivel(elemento) {
         preenchimentoincorreto++
         tesxtPerguntainput.classList.add("red")
         tesxtPerguntaInvalido.classList.remove("escondido")
-        return alert('Preencha o titulo da pergunta!')
+        tesxtPerguntainput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.querySelector('.pergunta-selecionada').classList.remove('pergunta-selecionada')
+        document.querySelectorAll(`.infQuizz.perguntaI`)[idx].classList.add("pergunta-selecionada")
+        return
         }
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
@@ -285,7 +288,10 @@ function exibirNivel(elemento) {
         preenchimentoincorreto++
         urlImgInput.classList.add("red")
         imagemtrueInvalido.classList.remove("escondido")
-        return alert("Preencha o campo de imagem da resposta!")
+        urlImgInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.querySelector('.pergunta-selecionada').classList.remove('pergunta-selecionada')
+        document.querySelectorAll(`.infQuizz.perguntaI`)[idx].classList.add("pergunta-selecionada")
+        return 
         }
 
         if(RespCprreta===""){
@@ -293,7 +299,10 @@ function exibirNivel(elemento) {
             preenchimentoincorreto++
             RespCprretainput.classList.add("red")
             tesxtrueInvalido.classList.remove("escondido")
-            return alert("Preencha o campo de resposta correta!")
+            tesxtrueInvalido.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            document.querySelector('.pergunta-selecionada').classList.remove('pergunta-selecionada')
+            document.querySelectorAll(`.infQuizz.perguntaI`)[idx].classList.add("pergunta-selecionada")
+            return 
         }
 
         answers.push({ 
@@ -438,6 +447,9 @@ let objetopergunta ={
 }
 
 if(answers.length < 2) {
+    document.querySelectorAll(`.infQuizz.perguntaI`)[idx].scrollIntoView({ behavior: 'smooth', block: 'center' })
+    document.querySelector('.pergunta-selecionada').classList.remove('pergunta-selecionada')
+    document.querySelectorAll(`.infQuizz.perguntaI`)[idx].classList.add("pergunta-selecionada")
     return alert('Preencha pelo menos 2 respostas')
 } 
     
@@ -553,25 +565,37 @@ function tratarNiveis(){
     if(TituloNivel.length<10){
         TituloNivelInput.classList.add("red")
         TNivelInvalidoid.classList.remove("escondido")
-        return alert("Preencha o titulo do nivel!")
+        TituloNivelInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.querySelector('.nivel-selecionado').classList.remove('nivel-selecionado')
+        document.querySelectorAll(`.infQuizz.niveisI`)[i].classList.add("nivel-selecionado")
+        return 
     }
 
     if (acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""){
         acertoMinimoInput.classList.add("red")
         AMnivelInvalidoid.classList.remove("escondido")
-        return alert("Preencha a porcentagem de acerto do nivel!")
+        acertoMinimoInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.querySelector('.nivel-selecionado').classList.remove('nivel-selecionado')
+        document.querySelectorAll(`.infQuizz.niveisI`)[i].classList.add("nivel-selecionado")
+        return 
         
     }
     if(!isImage(imagemdonivel)){
     IMGnivelInvalido.classList.remove("escondido")
     imagemdonivelInput.classList.add("red")
-    return alert("Preencha a imagem do nivel!")
+    imagemdonivelInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    document.querySelector('.nivel-selecionado').classList.remove('nivel-selecionado')
+    document.querySelectorAll(`.infQuizz.niveisI`)[i].classList.add("nivel-selecionado")
+    return 
     }
 
     if(descricaoNivel.length<30){  
         descricaoNivelInput.classList.add("red")
         DnivelInvalido.classList.remove("escondido")
-        return alert("Preencha a descrição do nivel!")
+        descricaoNivelInput.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        document.querySelector('.nivel-selecionado').classList.remove('nivel-selecionado')
+        document.querySelectorAll(`.infQuizz.niveisI`)[i].classList.add("nivel-selecionado")
+        return 
     }
    
     if (acertoMinimo==0){
