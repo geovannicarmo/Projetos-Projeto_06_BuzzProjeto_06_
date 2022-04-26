@@ -237,7 +237,10 @@ function exibirPergunta(elemento) {
     }
     elemento.parentElement.parentElement.classList.add('pergunta-selecionada')
     setTimeout(() => {
-        elemento.parentElement.querySelector('h3').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        elemento.parentElement.parentElement.style.position = 'relative';
+        elemento.parentElement.parentElement.style.top = '-100px';
+        elemento.parentElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        elemento.parentElement.parentElement.style.position = 'initial';
     }, 500)
 }
 
@@ -249,7 +252,10 @@ function exibirNivel(elemento) {
     }
     elemento.parentElement.parentElement.classList.add('nivel-selecionado')
     setTimeout(() => {
-        elemento.parentElement.querySelector('h3').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        elemento.parentElement.parentElement.style.position = 'relative';
+        elemento.parentElement.parentElement.style.top = '-100px';
+        elemento.parentElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        elemento.parentElement.parentElement.style.position = 'initial';
     }, 500)
 }
 
@@ -688,6 +694,11 @@ Quizzhtml =`<h2>Seu quizz está pronto!</h2>
 
 element4.innerHTML=Quizzhtml
 
+    document.querySelector("#titulo").value = ''
+    document.querySelector("#url").value = ''
+    document.querySelector("#nperguntas").value = ''
+    document.querySelector("#nniveis").value = ''
+
 }
 
 
@@ -788,6 +799,7 @@ function obterQuizz(id) {
 }
 
 let count = 0;
+let countRapido = 0;
 let countAcertos = 0;
 
 function selecionarResposta(resposta, perguntaId) {
@@ -804,11 +816,18 @@ function selecionarResposta(resposta, perguntaId) {
             document.querySelectorAll(`.card-resposta.${perguntaId}`)[i].querySelector('p').style.color = '#FF0B0B'
         }
     }
+    countRapido += 1
+    if(countRapido === document.querySelectorAll('.container-perguntas').length) {
+        setTimeout(() => {
+            finalizarQuizz()
+            document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 1500)
+    } 
 
     if(document.querySelectorAll('.container-perguntas')[count].nextElementSibling !== null) {
         setTimeout(() => {
             document.querySelectorAll('.container-perguntas')[count].nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            count += 1;
+            count += 1
         }, 1500)
     } else {
         setTimeout(() => {
@@ -816,17 +835,19 @@ function selecionarResposta(resposta, perguntaId) {
             document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
         }, 1500)
     }
+
     document.querySelectorAll(`.card-resposta.${perguntaId}`).forEach(card => card.removeAttribute('onclick'));
 }
 
 function finalizarQuizz() {
+    console.log(countAcertos)
     let countLevels = 0
     levelsJogando.sort((a, b) => a.minValue - b.minValue)
-    countAcertos = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;
-    countAcertos = Math.round(countAcertos)
+    let countFinal = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;
+    countFinal = Math.round(countFinal)
 
     for(let i = 0; i < levelsJogando.length; i++) {
-        if(countAcertos >= levelsJogando[i].minValue) {
+        if(countFinal >= levelsJogando[i].minValue) {
             countLevels++
         }
     }
@@ -835,7 +856,7 @@ function finalizarQuizz() {
         <div class="final-quizz">
             <div class="container-final">
                 <div class="titulo-resultado">
-                    <h3>${countAcertos}% de acerto: ${levelsJogando[countLevels - 1].title}</h3>
+                    <h3>${countFinal}% de acerto: ${levelsJogando[countLevels - 1].title}</h3>
                 </div>
                 <div class="container-resultado">   
                     <img src="${levelsJogando[countLevels - 1].image}" alt="">
@@ -854,6 +875,7 @@ function finalizarQuizz() {
 
 function reiniciarQuizz() {
     obterQuizz(idAtual)
+    countRapido = 0
     count = 0
     countAcertos = 0
     setTimeout(() => {
@@ -874,10 +896,6 @@ function voltarHome() {
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
     document.querySelector('.sucessoQuizz').classList.add('escondido')
-    document.querySelector("#titulo").value = ''
-    document.querySelector("#url").value = ''
-    document.querySelector("#nperguntas").value = ''
-    document.querySelector("#nniveis").value = ''
     carregarTodosQuizzes()
     carregarQuizzesUsuario()
 }
@@ -945,10 +963,11 @@ function removerQuizz(id, secretKey) {
                 getLocal.splice(i, 1)
             }
         }
-        console.log(getLocal.length === 0)
 
         if(getLocal.length === 0) {
             localStorage.removeItem('localIdsSecretKeys')
+            document.querySelector('.com-quizzes').classList.add('escondido')
+            document.querySelector('.sem-quizzes').classList.remove('escondido')
         } else {
             localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
         }
@@ -969,7 +988,6 @@ function editarQuizz(id, secretKey) {
         comeco()
     })
 }
-
 
 carregarTodosQuizzes()
 carregarQuizzesUsuario()
