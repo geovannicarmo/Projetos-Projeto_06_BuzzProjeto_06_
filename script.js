@@ -5,7 +5,9 @@ let url;
 let nperguntas=1;
 let questions=[];
 let answers=[];
+let levels=[];
 let getLocal;
+let quizzSelecionado = {}
 
 
 
@@ -108,6 +110,7 @@ function infQuizz(){
 
 function comeco() {
     element = document.querySelector(".infBasic")
+    // titulo = response.data.title
 
 
     pagina1 = `
@@ -122,6 +125,7 @@ function comeco() {
 
     <input type="text" id="nperguntas" name="firstname" placeholder="Quantidade de perguntas do quizz
     ">
+    <div class="nperguntasInvalido escondido textoInputErro"> O valor informado não é uma URL válida</div>
    
 
     <input type="text" id="nniveis" name="firstname" placeholder="Quantidade de níveis do quizz
@@ -133,8 +137,15 @@ function comeco() {
     <p>Prosseguir pra criar perguntas</p>
 </div>`
 
-    element.innerHTML = pagina1
 
+    element.innerHTML = pagina1
+    
+    if(Object.keys(quizzSelecionado).length > 0) {
+        document.querySelector('#titulo').value = quizzSelecionado.data.title
+        document.querySelector('#url').value = quizzSelecionado.data.image
+        document.querySelector('#nperguntas').value = quizzSelecionado.data.questions.length
+        document.querySelector('#nniveis').value = quizzSelecionado.data.levels.length
+    }
 }
 
 
@@ -146,6 +157,9 @@ function comeco() {
 
     element2.innerHTML=""
     element2.innerHTML = "<h2>Crie suas perguntas</h2>"
+
+    const temKeys = Object.keys(quizzSelecionado).length > 0
+    const isMaior = (i, qtd) => quizzSelecionado.data.questions[i].answers.length > qtd
     
     for(let i=0; i<nperguntas;i++){
       
@@ -153,32 +167,52 @@ function comeco() {
    
    renderizaCriarPerguntas[i] =`
  <div class="infQuizz perguntaI classe${i} ${i === 0 ? 'pergunta-selecionada' : ''}">
-    <div>
+    <div class="expandirForm">
         <h3>Pergunta ${i+1}</h3>
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirPergunta(this)" />
     </div>
-    <input type="text" id="tesxtPergunta" name="firstname" placeholder="Texto da pergunta">
+
+    <input type="text" id="tesxtPergunta" value="${temKeys ? quizzSelecionado.data.questions[i].title : ''}" name="firstname" placeholder="Texto da pergunta">
+
+    <div class="tesxtPerguntaInvalido${i} escondido textoInputErro"> É necessário preencher o texto da pergunta.</div>
+
     <input type="color" id="corFundo" name="firstname" placeholder="Cor de fundo da pergunta
     ">
     <h3>Resposta correta</h3>
-    <input type="text" id="RespCprreta" name="firstname" placeholder="Resposta correta
+    <input type="text" id="RespCprreta" value="${temKeys ? quizzSelecionado.data.questions[i].answers[0].text : ''}" name="firstname" placeholder="Resposta correta
     ">
-    <input type="text" id="urlImg" name="firstname" placeholder="URL da imagem
+    <div class="tesxtrueInvalido${i} escondido textoInputErro"> É necessário preencher a resposta.</div>
+
+    <input type="text" id="urlImg" value="${temKeys ? quizzSelecionado.data.questions[i].answers[0].image : ''}" name="firstname" placeholder="URL da imagem
     ">
+    <div class="imagemtrueInvalido${i} escondido textoInputErro"> O valor informado não é uma URL válida</div>
+
     <h3>Respostas incorretas
     </h3>
-    <input type="text" id="incorreta1" name="firstname" placeholder="Resposta incorreta 1
+    <input type="text" id="incorreta1" value="${temKeys ? quizzSelecionado.data.questions[i].answers[1].text : ''}" name="firstname" placeholder="Resposta incorreta 1
     ">
-    <input type="text" class="space" id="urlincorreta1" name="firstname" placeholder="URL da imagem 1
+    <div class="tesxtfalseInvalido1${i} escondido textoInputErro"> É necessário preencher a resposta.</div>
+
+    <input type="text" class="space" value="${temKeys ? quizzSelecionado.data.questions[i].answers[1].image : ''}" id="urlincorreta1" name="firstname" placeholder="URL da imagem 1
     ">
-    <input type="text" id="incorreta2" name="firstname" placeholder="Resposta incorreta 2
+    <div class="imagemfalseInvalido1${i} escondido textoInputErro space"> O valor informado não é uma URL válida</div>
+
+    <input type="text" id="incorreta2" value="${temKeys ? isMaior(i, 2) ? quizzSelecionado.data.questions[i].answers[2].text : '' : ''}" name="firstname" placeholder="Resposta incorreta 2
     ">
-    <input type="text" class="space" id="urlincorreta2" name="firstname" placeholder="URL da imagem 2
+    <div class="tesxtfalseInvalido2${i} escondido textoInputErro"> É necessário preencher a resposta.</div>
+
+    <input type="text" class="space" value="${temKeys ? isMaior(i, 2) ? quizzSelecionado.data.questions[i].answers[2].image : '' : ''}" id="urlincorreta2" name="firstname" placeholder="URL da imagem 2
     ">
-    <input type="text" id="incorreta3" name="firstname" placeholder="Resposta incorreta 3
+    <div class="imagemfalseInvalido2${i} escondido textoInputErro"> O valor informado não é uma URL válida</div>
+
+    <input type="text" id="incorreta3" value="${temKeys ? isMaior(i, 3) ? quizzSelecionado.data.questions[i].answers[3].text : '' : ''}" name="firstname" placeholder="Resposta incorreta 3
     ">
-    <input type="text" id="urlincorreta3" name="firstname" placeholder="URL da imagem 3
+    <div class="tesxtfalseInvalido3${i} escondido textoInputErro"> É necessário preencher a resposta.</div>
+
+    <input type="text" id="urlincorreta3" value="${temKeys ? isMaior(i, 3) ? quizzSelecionado.data.questions[i].answers[3].image : '' : ''}" name="firstname" placeholder="URL da imagem 3
     ">
+    <div class="imagemfalseInvalido3${i} escondido textoInputErro"> O valor informado não é uma URL válida</div>
+
 </div>`
 
         
@@ -226,6 +260,7 @@ function exibirNivel(elemento) {
   
   function tratarPerguntas(){
     questions = []
+    let preenchimentoincorreto=0;
    
     for(let idx=0; idx<nperguntas; idx++){
     answers = []
@@ -234,42 +269,96 @@ function exibirNivel(elemento) {
 
     tesxtPergunta= classecriaPerguntas.querySelector(`.classe${idx} #tesxtPergunta`).value
     
+    tesxtPerguntainput=classecriaPerguntas.querySelector(`.classe${idx} #tesxtPergunta`)
+    tesxtPerguntainput.classList.remove("red")
+
+    let tesxtPerguntaInvalido= classecriaPerguntas.querySelector(`.tesxtPerguntaInvalido${idx}`)
+    
+    tesxtPerguntaInvalido.classList.add("escondido")
 
     corFundo= classecriaPerguntas.querySelector(`.classe${idx} #corFundo`).value
 
     if(tesxtPergunta.length<20){
-        return alert("falha")}
+        preenchimentoincorreto++
+        tesxtPerguntainput.classList.add("red")
+        tesxtPerguntaInvalido.classList.remove("escondido")
+        }
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
 
+    RespCprretainput=classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`)
+    RespCprretainput.classList.remove("red")
+
+    let tesxtrueInvalido= classecriaPerguntas.querySelector(`.tesxtrueInvalido${idx}`)
+  
+    tesxtrueInvalido.classList.add("escondido")
+
     urlImg= classecriaPerguntas.querySelector(`.classe${idx} #urlImg`).value
 
-if (RespCprreta!=="" && urlImg!==""){
+    urlImgInput=classecriaPerguntas.querySelector(`.classe${idx} #urlImg`)
+    urlImgInput.classList.remove("red")
 
-    if(!isImage(urlImg) || RespCprreta==="" || urlImg === ""){
-      
-        return alert("falha1")
-    }
+    let imagemtrueInvalido= classecriaPerguntas.querySelector(`.imagemtrueInvalido${idx}`)
+   
+    imagemtrueInvalido.classList.add("escondido")
 
-    answers.push({ 
-        text: RespCprreta,
-        image: urlImg,
-        isCorrectAnswer: true
-    })
+  
 
-} else {
-    return alert('falha1 dois campos')
-}
+        if(!isImage(urlImg) || urlImg === ""){ 
+
+        preenchimentoincorreto++
+        urlImgInput.classList.add("red")
+        imagemtrueInvalido.classList.remove("escondido")
+        }
+
+        if(RespCprreta===""){
+
+            preenchimentoincorreto++
+            RespCprretainput.classList.add("red")
+            tesxtrueInvalido.classList.remove("escondido")
+        }
+
+        answers.push({ 
+            text: RespCprreta,
+            image: urlImg,
+            isCorrectAnswer: true
+        })
+
+
+
+
 
     incorreta1= classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`).value
 
+    Respfalse1input=classecriaPerguntas.querySelector(`.classe${idx} #incorreta1`)
+    Respfalse1input.classList.remove("red")
+
+    let tesxtfalseInvalido1= classecriaPerguntas.querySelector(`.tesxtfalseInvalido1${idx}`)
+    console.log(tesxtfalseInvalido1)
+    tesxtfalseInvalido1.classList.add("escondido")
+
     urlincorreta1= classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta1`).value
+
+    urlfalse1Input=classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta1`)
+    urlfalse1Input.classList.remove("red")
+
+    let imagemfalseInvalido1= classecriaPerguntas.querySelector(`.imagemfalseInvalido1${idx}`)
+    
+    imagemfalseInvalido1.classList.add("escondido")
 
     if (incorreta1!=="" || urlincorreta1!==""){
 
-        if(!isImage(urlincorreta1) || incorreta1===""){
-       
-            return alert("falha2")
+        if(!isImage(urlincorreta1) ){
+
+            preenchimentoincorreto++
+            urlfalse1Input.classList.add("red")
+            imagemfalseInvalido1.classList.remove("escondido")
+
+        }
+        if(incorreta1===""){
+            preenchimentoincorreto++
+        Respfalse1input.classList.add("red")
+        tesxtfalseInvalido1.classList.remove("escondido")
         }
 
         answers.push(  { 
@@ -283,13 +372,35 @@ if (RespCprreta!=="" && urlImg!==""){
 
     incorreta2= classecriaPerguntas.querySelector(`.classe${idx} #incorreta2`).value
 
+    Respfalse2input=classecriaPerguntas.querySelector(`.classe${idx} #incorreta2`)
+    Respfalse2input.classList.remove("red")
+
+    let tesxtfalseInvalido2= classecriaPerguntas.querySelector(`.tesxtfalseInvalido2${idx}`)
+    tesxtfalseInvalido2.classList.add("escondido")
+
     urlincorreta2= classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta2`).value
+
+    urlfalse2Input=classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta2`)
+    urlfalse2Input.classList.remove("red")
+
+    let imagemfalseInvalido2= classecriaPerguntas.querySelector(`.imagemfalseInvalido2${idx}`)
+    
+    imagemfalseInvalido2.classList.add("escondido")
 
     if (incorreta2!=="" || urlincorreta2!==""){
 
-        if(!isImage(urlincorreta2) || incorreta2===""){
-       
-            return alert("falha3")
+        if(!isImage(urlincorreta2) ){
+            preenchimentoincorreto++
+            urlfalse2Input.classList.add("red")
+            imagemfalseInvalido2.classList.remove("escondido")
+
+        }
+        if(incorreta2===""){
+            preenchimentoincorreto++
+        Respfalse2input.classList.add("red")
+        tesxtfalseInvalido2.classList.remove("escondido")
+
+        
         }
 
         answers.push(  { 
@@ -301,14 +412,38 @@ if (RespCprreta!=="" && urlImg!==""){
     }
 
     incorreta3= classecriaPerguntas.querySelector(`.classe${idx} #incorreta3`).value
+    
+    Respfalse3input=classecriaPerguntas.querySelector(`.classe${idx} #incorreta3`)
+    Respfalse3input.classList.remove("red")
+
+    let tesxtfalseInvalido3= classecriaPerguntas.querySelector(`.tesxtfalseInvalido3${idx}`)
+    tesxtfalseInvalido3.classList.add("escondido")
 
     urlincorreta3= classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta3`).value
 
+    urlfalse3Input=classecriaPerguntas.querySelector(`.classe${idx} #urlincorreta3`)
+    urlfalse3Input.classList.remove("red")
+
+    let imagemfalseInvalido3= classecriaPerguntas.querySelector(`.imagemfalseInvalido3${idx}`)
+    
+    imagemfalseInvalido3.classList.add("escondido")
+
     if (incorreta3!=="" || urlincorreta3!==""){
 
-        if(!isImage(urlincorreta3) || incorreta3===""){
-       
-            return alert("falha4")
+        if(!isImage(urlincorreta3) ){
+            preenchimentoincorreto++
+
+
+            urlfalse3Input.classList.add("red")
+            imagemfalseInvalido3.classList.remove("escondido")
+
+        }
+        if(incorreta3===""){
+            preenchimentoincorreto++
+        Respfalse3input.classList.add("red")
+        tesxtfalseInvalido3.classList.remove("escondido")
+
+        
         }
 
         answers.push(  { 
@@ -330,6 +465,10 @@ let objetopergunta ={
 
 }
 
+if(preenchimentoincorreto>0){
+return console.log("falha no preenchimento")
+}
+
 if(answers.length < 2) {
     return alert('preencha pelo menos 2 campos')
 } 
@@ -338,6 +477,14 @@ if(answers.length < 2) {
 
 
 }
+
+if(preenchimentoincorreto>0){
+    return console.log("falha no preenchimento")
+    }
+    
+    if(answers.length < 2) {
+        return alert('preencha pelo menos 2 campos')
+    } 
     
    
     return criarNiveis()
@@ -362,27 +509,37 @@ if(answers.length < 2) {
     element3.innerHTML=""
     element3.innerHTML = "<h2>Agora, decida os níveis!</h2>"
 
+    const temKeys = Object.keys(quizzSelecionado).length > 0
+
 
     for(let id=0; id<nniveis; id++){
 
    renderizaCriarniveis[id] =`
    <div class="infQuizz niveisI classeN${id} ${id === 0 ? 'nivel-selecionado': ''}">
-   <div>
+   <div class="expandirForm">
         <h3>Nível ${id+1}</h3>
         <img src="images/edit-icon.svg" alt="edit-icon" onclick="exibirNivel(this)" />
    </div>
-   <input type="text" id="TituloNivel" name="firstname" placeholder="Título do nível">
-   <div class="TNivelInvalido${id} textoInputErro escondido"> O titilodonuveltem que ter 20cac </div>
-   
+   <input type="text" id="TituloNivel" value="${temKeys ? quizzSelecionado.data.levels[id].title : ''}" name="firstname" placeholder="Título do nível"/>
+   <div class="escondido TNivelInvalido${id} textoInputErro"> É necessário que o título do nivel tenha ao menos 20 caracteres. </div>
 
-   <input type="text" id="acertoMinimo" name="firstname" placeholder="% de acerto mínima
+   <input type="text" id="acertoMinimo" value="${temKeys ? quizzSelecionado.data.levels[id].minValue : ''}" name="firstname" placeholder="% de acerto mínima
    ">
+   <div class="escondido AMnivelInvalido${id} textoInputErro"> O percentual de acerto deve ser um valor entre 0 e 100. </div>
 
-   <div class="TNivelInvalido${id} textoInputErro escondido"> O titilodonuveltem que ter 20cac </div>
-   <input type="text" id="imagemdonivel" name="firstname" placeholder="URL da imagem do nível
+   <input type="text" id="imagemdonivel" value="${temKeys ? quizzSelecionado.data.levels[id].image : ''}" name="firstname" placeholder="URL da imagem do nível
    ">
+   <div class="escondido IMGnivelInvalido${id} textoInputErro"> O valor informado não é uma URL válida </div>
+
+  
+
    <textarea cols="30" rows="10" id="descricaoNivel" name="firstname" placeholder="Descrição do nível
-   "></textarea>
+   ">
+  
+   ${temKeys ? quizzSelecionado.data.levels[id].text : ''}</textarea>
+
+   <div class="escondido DnivelInvalido${id} textoInputErro"> A descrição do nível deve ao menos 30 caracteres </div>
+
 </div>`
 element3.innerHTML+=renderizaCriarniveis[id]
 
@@ -413,18 +570,51 @@ function tratarNiveis(){
     TNivelInvalidoid.classList.add("escondido")
 
     acertoMinimo= document.querySelector(`.classeN${i} #acertoMinimo`).value
+    acertoMinimoInput= document.querySelector(`.classeN${i} #acertoMinimo`)
+    acertoMinimoInput.classList.remove("red")
+
+    AMnivelInvalidoid=document.querySelector(`.AMnivelInvalido${i}`)
+    console.log(AMnivelInvalidoid)
+    AMnivelInvalidoid.classList.add("escondido")
 
     imagemdonivel= document.querySelector(`.classeN${i} #imagemdonivel`).value
+    imagemdonivelInput= document.querySelector(`.classeN${i} #imagemdonivel`)
+    imagemdonivelInput.classList.remove("red")
+
+    IMGnivelInvalido=document.querySelector(`.IMGnivelInvalido${i}`)
+    IMGnivelInvalido.classList.add("escondido")
+
     descricaoNivel= document.querySelector(`.classeN${i} #descricaoNivel`).value
+    descricaoNivelInput= document.querySelector(`.classeN${i} #descricaoNivel`)
+    descricaoNivelInput.classList.remove("red")
+
+    DnivelInvalido=document.querySelector(`.DnivelInvalido${i}`)
+    console.log(DnivelInvalido)
+    DnivelInvalido.classList.add("escondido")
 
     if(TituloNivel.length<10){
         TituloNivelInput.classList.add("red")
         TNivelInvalidoid.classList.remove("escondido")
     }
 
-    if(TituloNivel.length<10||acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""|| descricaoNivel.length<30||!isImage(imagemdonivel)){
-        return alert("Preencha os dados corretamente.")
+    if (acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""){
+        acertoMinimoInput.classList.add("red")
+        AMnivelInvalidoid.classList.remove("escondido")
+        
     }
+    if(!isImage(imagemdonivel)){
+    IMGnivelInvalido.classList.remove("escondido")
+    imagemdonivelInput.classList.add("red")
+    console.log("gggg")
+    }
+
+    if(descricaoNivel.length<30){
+        console.log("gggg")
+        descricaoNivelInput.classList.add("red")
+        DnivelInvalido.classList.remove("escondido")
+    }
+
+  
 
     
     if (acertoMinimo==0){
@@ -445,10 +635,13 @@ function tratarNiveis(){
         }
 
         if(cont===0){
-            return alert("Preencha os dados corretamente.")
+            return alert("É obrigatório existir pelo menos 1 nível cuja % de acerto mínima seja 0%")
         }
 
-   
+        if(!(TituloNivel.length<10||acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""|| descricaoNivel.length<30||!isImage(imagemdonivel))){
+        
+        
+        
 
     enviaQuizz ={
         title: titulo,
@@ -458,10 +651,19 @@ function tratarNiveis(){
 
     }
     
+    const temKey = Object.keys(quizzSelecionado).length > 0
 
-    const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes', enviaQuizz);
+    if(temKey) {
+        const requisicao = axios.put(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${quizzSelecionado.data.id}`, enviaQuizz, {
+            headers: { "Secret-Key": quizzSelecionado.secretKey }
+        });
+        requisicao.then(respostaAPI);
+    } else {
+        const requisicao = axios.post('https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/', enviaQuizz);
+        requisicao.then(respostaAPI);
+    }
+    }
 
-    requisicao.then(respostaAPI);
 }
 
 
@@ -476,8 +678,7 @@ element4.classList.remove("escondido")
 
 
 Quizzhtml =`<h2>Seu quizz está pronto!</h2>
-<div class="imagiQuizzCriado">
-<img onclick="obterQuizz(${id})" src="${url}" alt="">
+<div class="imagiQuizzCriado" onclick="obterQuizz(${id})" style="${background(url, opacidadeLinearBottom, true)}">
 <p id="legendaimagiQuizzCriado" >${titulo}</p>
 </div>
 <div onclick="obterQuizz(${id})" class="buttonInf buttonAcessarQuizz">
@@ -507,15 +708,17 @@ function respostaAPI(resposta){
     }
 console.log(JSON.parse(localStorage.getItem('localIdsSecretKeys')))
     getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
-
-    getLocal.push({ id: resposta.data.id, SecretKey: resposta.data.key })
-    localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
-    QuizzPronto(resposta.data.id)
+    if(Object.keys(quizzSelecionado).length > 0) {
+        localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
+        QuizzPronto(resposta.data.id)
+    } else {
+        getLocal.push({ id: resposta.data.id, SecretKey: resposta.data.key })
+        localStorage.setItem('localIdsSecretKeys', JSON.stringify(getLocal))
+        QuizzPronto(resposta.data.id)
+    }
 }
 
 
-
-comeco()
 console.log(localStorage.getItem('localIdsSecretKeys'))
 
 
@@ -524,7 +727,7 @@ console.log(localStorage.getItem('localIdsSecretKeys'))
 
 // -------------------- Tela 2 - Jogando Quizz ------------------------
 let questoesSortidas = []
-let levels = []
+let levelsJogando = []
 let idAtual;
 const opacidadeLinear = 'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),'
 const opacidadeLinearBottom = 'linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%),'
@@ -548,7 +751,7 @@ function obterQuizz(id) {
     const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
 
     promise.then(response => {
-        levels = response.data.levels
+        levelsJogando = response.data.levels
         document.querySelector('.container-jogando').innerHTML = `
             <div class="quizz-principal" style="${background(response.data.image, opacidadeLinear)}">
                 <h1>${response.data.title}</h1>
@@ -606,24 +809,24 @@ function selecionarResposta(resposta, perguntaId) {
         setTimeout(() => {
             document.querySelectorAll('.container-perguntas')[count].nextElementSibling.scrollIntoView({ behavior: 'smooth', block: 'center' });
             count += 1;
-        }, 2000)
+        }, 1500)
     } else {
         setTimeout(() => {
             finalizarQuizz()
             document.querySelector('.finalizar-jogo').scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }, 2000)
+        }, 1500)
     }
     document.querySelectorAll(`.card-resposta.${perguntaId}`).forEach(card => card.removeAttribute('onclick'));
 }
 
 function finalizarQuizz() {
     let countLevels = 0
-    levels.sort((a, b) => a.minValue - b.minValue)
+    levelsJogando.sort((a, b) => a.minValue - b.minValue)
     countAcertos = (countAcertos * 100) / document.querySelectorAll('.container-respostas').length;
     countAcertos = Math.round(countAcertos)
 
-    for(let i = 0; i < levels.length; i++) {
-        if(countAcertos >= levels[i].minValue) {
+    for(let i = 0; i < levelsJogando.length; i++) {
+        if(countAcertos >= levelsJogando[i].minValue) {
             countLevels++
         }
     }
@@ -632,12 +835,12 @@ function finalizarQuizz() {
         <div class="final-quizz">
             <div class="container-final">
                 <div class="titulo-resultado">
-                    <h3>${countAcertos}% de acerto: ${levels[countLevels - 1].title}</h3>
+                    <h3>${countAcertos}% de acerto: ${levelsJogando[countLevels - 1].title}</h3>
                 </div>
                 <div class="container-resultado">   
-                    <img src="${levels[countLevels - 1].image}" alt="">
+                    <img src="${levelsJogando[countLevels - 1].image}" alt="">
                     <div class="texto-resultado">
-                        <p>${levels[countLevels - 1].text}</p>
+                        <p>${levelsJogando[countLevels - 1].text}</p>
                     </div>
                 </div>
             </div>
@@ -654,7 +857,11 @@ function reiniciarQuizz() {
     count = 0
     countAcertos = 0
     setTimeout(() => {
-        document.querySelector('.top').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.querySelector('.jogando-quizz').style.position = 'relative';
+        document.querySelector('.jogando-quizz').style.top = '-100px';
+        document.querySelector('.jogando-quizz').scrollIntoView({ behavior: 'smooth', block: 'start' })
+        document.querySelector('.jogando-quizz').style.position = 'initial';
+        document.querySelector('.jogando-quizz').style.top = '0';
         document.querySelector('.finalizar-jogo').innerHTML = ''
     }, 1000)
 }
@@ -662,6 +869,7 @@ function reiniciarQuizz() {
 function voltarHome() {
     count = 0
     countAcertos = 0
+    quizzSelecionado = {}
     document.querySelector('.finalizar-jogo').innerHTML = ''
     document.querySelector('.jogando-quizz').classList.add('escondido')
     document.querySelector('.home').classList.remove('escondido')
@@ -679,6 +887,7 @@ function voltarHome() {
 function criarQuizz() {
     document.querySelector('.home').classList.add('escondido')
     document.querySelector('.infBasic').classList.remove('escondido')
+    comeco()
 }
 
 function carregarTodosQuizzes() {
@@ -726,6 +935,7 @@ function carregarQuizzesUsuario() {
         }
     }   
 }
+
 function removerQuizz(id, secretKey) {
     if(confirm("Deseja deletar esse Quizz?") === true) {
         getLocal = JSON.parse(localStorage.getItem('localIdsSecretKeys'))
@@ -746,6 +956,18 @@ function removerQuizz(id, secretKey) {
         axios.delete(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`, { headers: { "Secret-Key": secretKey } })
         voltarHome()
     }
+}
+
+function editarQuizz(id, secretKey) {
+    document.querySelector('.home').classList.add('escondido')
+    document.querySelector(".infBasic").classList.remove('escondido')
+    const promise = axios.get(`https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes/${id}`)
+
+    promise.then(response => {
+        quizzSelecionado = { data: response.data, secretKey }
+        console.log(quizzSelecionado)
+        comeco()
+    })
 }
 
 
