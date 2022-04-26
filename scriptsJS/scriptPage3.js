@@ -257,6 +257,7 @@ function exibirNivel(elemento) {
         preenchimentoincorreto++
         tesxtPerguntainput.classList.add("red")
         tesxtPerguntaInvalido.classList.remove("escondido")
+        return alert('Preencha o titulo da pergunta!')
         }
 
     RespCprreta= classecriaPerguntas.querySelector(`.classe${idx} #RespCprreta`).value
@@ -284,6 +285,7 @@ function exibirNivel(elemento) {
         preenchimentoincorreto++
         urlImgInput.classList.add("red")
         imagemtrueInvalido.classList.remove("escondido")
+        return alert("Preencha o campo de imagem da resposta!")
         }
 
         if(RespCprreta===""){
@@ -291,6 +293,7 @@ function exibirNivel(elemento) {
             preenchimentoincorreto++
             RespCprretainput.classList.add("red")
             tesxtrueInvalido.classList.remove("escondido")
+            return alert("Preencha o campo de resposta correta!")
         }
 
         answers.push({ 
@@ -550,25 +553,28 @@ function tratarNiveis(){
     if(TituloNivel.length<10){
         TituloNivelInput.classList.add("red")
         TNivelInvalidoid.classList.remove("escondido")
+        return alert("Preencha o titulo do nivel!")
     }
 
     if (acertoMinimo<0||acertoMinimo>100|| isNaN(acertoMinimo) || acertoMinimo===""){
         acertoMinimoInput.classList.add("red")
         AMnivelInvalidoid.classList.remove("escondido")
+        return alert("Preencha a porcentagem de acerto do nivel!")
         
     }
     if(!isImage(imagemdonivel)){
     IMGnivelInvalido.classList.remove("escondido")
     imagemdonivelInput.classList.add("red")
+    return alert("Preencha a imagem do nivel!")
     }
 
     if(descricaoNivel.length<30){  
         descricaoNivelInput.classList.add("red")
         DnivelInvalido.classList.remove("escondido")
+        return alert("Preencha a descrição do nivel!")
     }
    
     if (acertoMinimo==0){
-       
         cont++
     }
 
