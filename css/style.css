@@ -239,6 +239,9 @@ input:first-child{
     font-size: 39px;
     color: #fff;
     font-weight: 400;
+    text-align: center;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 .perguntas-quizz, .final-quizz {
@@ -272,7 +275,7 @@ input:first-child{
     align-items: center;
 
     margin-top: 28px;
-    height: 138px;
+    min-height: 138px;
 }
 
 .titulo-resultado {
@@ -284,6 +287,8 @@ input:first-child{
     font-weight: bold;
     color: #fff;
     text-align: center;
+    word-wrap: break-word;
+    width: 100%;
 }
 
 .container-respostas {
@@ -304,6 +309,7 @@ input:first-child{
 .card-resposta {
     width: 48%;
     cursor: pointer;
+    height: 100%;
     transition: all 300ms ease-in-out;
 }
 
@@ -641,7 +647,7 @@ input:first-child{
     }
 
     .container-respostas img {
-        height: 80%;
+        height: 40%;
     }
 
     .container-respostas {
