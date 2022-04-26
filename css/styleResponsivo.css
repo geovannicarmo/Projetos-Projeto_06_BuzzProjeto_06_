@@ -1,0 +1,139 @@
+
+/*  --------------Responsivo---------------  */
+
+	
+
+
+@media (max-width: 1100px) {
+    /* Tela 1 */
+    .quizzes, .todos-quizzes {
+        width: 90%;
+    }
+
+    .todos-quizzes > div {
+        height: auto;
+    }
+
+    .card-quizz {
+        min-width: 100%;
+        margin-bottom: 14px;
+    }
+
+    .sem-quizzes {
+        margin: 31px 0;
+    }
+
+    .com-quizzes {
+        margin: 38px 0;
+    }
+
+    .com-quizzes > div:last-child {
+        flex-direction: column;
+    }
+
+    .com-quizzes .card-quizz {
+        margin-right: 0;
+    }
+
+    .seus-quizzes .gerenciar-quizz {
+        right: 0;
+    }
+
+    .seus-quizzes > div {
+        width: 100%;
+    }
+
+    /* Tela 2 */
+    .perguntas-quizz, .final-quizz {
+        width: 100%;
+    }
+
+    .titulo-pergunta {
+        height: 89px;
+    }
+
+    .quizz-principal {
+        height: 142px;
+    }
+
+    .quizz-principal h1 {
+        font-size: 19px;
+    }
+
+    .container-respostas img {
+        height: 40%;
+    }
+
+    .container-respostas {
+        margin-bottom: 23px;
+    }
+
+    .titulo-pergunta h3, .titulo-resultado h3 {
+        font-size: 19px;
+    }
+
+    .card-resposta p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+        margin-top: 5px;
+    }
+
+    .container-resultado p {
+        font-size: 1rem;
+    }
+
+    .container-resultado {
+        flex-direction: column;
+    }
+
+    .container-resultado img, .texto-resultado {
+        width: 100%;
+    }
+
+    .texto-resultado {
+        margin-top: 15px;
+    }
+
+
+    h2{
+        margin-top: 37px;
+        margin-bottom: 29px;
+        font-weight: bold;
+       
+    }
+
+    .infQuizz{
+        width: 100%;
+        margin-bottom: 29px;
+     
+    }
+
+    .buttonInf{
+   
+        width: 86%;
+	}
+
+    .buttonAcessarQuizz{
+        width: 59%;
+    }
+
+    .criar{
+        width: 100%;
+        margin-bottom: 29px;
+     }
+
+     /* .imagiQuizzCriado img{
+    
+        width: 91%;
+      } */
+
+    .imagiQuizzCriado {
+        width: 90%;
+    }
+}
+
+@media (max-width: 375px) {
+    .card-quizz {
+        background-size: 150%;
+    }
+}
